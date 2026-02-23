@@ -26,17 +26,17 @@ def test_client_model_imports():
 
 def test_common_model_imports():
     """All common model imports used by HA integration must resolve."""
-    from matter_server.common.models import (
-        EventType,
-        MatterSoftwareVersion,
-        ServerInfoMessage,
-        UpdateSource,
-    )
     from matter_server.common.errors import (
         MatterError,
         NodeNotExists,
         UpdateCheckError,
         UpdateError,
+    )
+    from matter_server.common.models import (
+        EventType,
+        MatterSoftwareVersion,
+        ServerInfoMessage,
+        UpdateSource,
     )
 
     assert EventType is not None

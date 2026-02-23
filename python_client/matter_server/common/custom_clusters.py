@@ -12,7 +12,6 @@ from chip.clusters.ClusterObjects import (
 )
 from chip.tlv import float32, uint
 
-
 # pylint: disable=invalid-name,arguments-renamed,no-self-argument
 # mypy: ignore_errors=true
 
@@ -52,7 +51,7 @@ class EveCluster(Cluster, CustomClusterMixin):
     id: ClassVar[int] = 0x130AFC01
 
     @ChipUtility.classproperty
-    def descriptor(cls) -> ClusterObjectDescriptor:
+    def descriptor(self) -> ClusterObjectDescriptor:
         """Return descriptor for this cluster."""
         return ClusterObjectDescriptor(
             Fields=[
@@ -148,17 +147,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """GetConfig Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0000
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=bytes)
 
@@ -169,17 +168,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """SetConfig Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0001
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=bytes)
 
@@ -190,17 +189,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """LoggingMetadata Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0002
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=bytes)
 
@@ -211,17 +210,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """LoggingData Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0003
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=bytes)
 
@@ -232,17 +231,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """TimesOpened Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0006
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=int)
 
@@ -253,17 +252,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """LastEventTime Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0007
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -274,17 +273,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """Watt Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A000A
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=float32)
 
@@ -295,17 +294,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """WattAccumulated Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A000B
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=float32)
 
@@ -316,17 +315,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """StatusFault Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A000C
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -339,17 +338,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """wattAccumulatedControlPoint Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A000E
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -360,17 +359,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """Voltage Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0008
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=float32)
 
@@ -381,17 +380,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """Current Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0009
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=float32)
 
@@ -404,17 +403,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """ObstructionDetected Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0010
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=bool)
 
@@ -425,17 +424,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """ChildLock Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0011
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=bool)
 
@@ -446,17 +445,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """Rloc16 Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0012
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -467,17 +466,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """Altitude Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0013
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=float32)
 
@@ -488,17 +487,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """Pressure Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0014
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=float32)
 
@@ -509,17 +508,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """WeatherTrend Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0015
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=int)
 
@@ -530,17 +529,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """ValvePosition Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A0018
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=int)
 
@@ -553,17 +552,17 @@ class EveCluster(Cluster, CustomClusterMixin):
             """MotionSensitivity Attribute within the Eve Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130AFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x130A000D
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -577,7 +576,7 @@ class InovelliCluster(Cluster, CustomClusterMixin):
     id: ClassVar[int] = 0x122FFC31
 
     @ChipUtility.classproperty
-    def descriptor(cls) -> ClusterObjectDescriptor:
+    def descriptor(self) -> ClusterObjectDescriptor:
         """Return descriptor for this cluster."""
         return ClusterObjectDescriptor(
             Fields=[
@@ -609,17 +608,17 @@ class InovelliCluster(Cluster, CustomClusterMixin):
             """LEDIndicatorIntensityOn Attribute within the Inovelli Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x122FFC31
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x122F0061
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -632,17 +631,17 @@ class InovelliCluster(Cluster, CustomClusterMixin):
             """LEDIndicatorIntensityOff Attribute within the Inovelli Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x122FFC31
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x122F0062
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -655,17 +654,17 @@ class InovelliCluster(Cluster, CustomClusterMixin):
             """ClearNotificationWithConfigDoubleTap Attribute within the Inovelli Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x122FFC31
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x122F0106
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=bool)
 
@@ -679,7 +678,7 @@ class NeoCluster(Cluster, CustomClusterMixin):
     id: ClassVar[int] = 0x00125DFC11
 
     @ChipUtility.classproperty
-    def descriptor(cls) -> ClusterObjectDescriptor:
+    def descriptor(self) -> ClusterObjectDescriptor:
         """Return descriptor for this cluster."""
         return ClusterObjectDescriptor(
             Fields=[
@@ -711,17 +710,17 @@ class NeoCluster(Cluster, CustomClusterMixin):
             """Watt Attribute within the Neo Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00125DFC11
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00125D0023
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -732,17 +731,17 @@ class NeoCluster(Cluster, CustomClusterMixin):
             """WattAccumulated Attribute within the Neo Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00125DFC11
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00125D0021
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -753,17 +752,17 @@ class NeoCluster(Cluster, CustomClusterMixin):
             """Voltage Attribute within the Neo Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00125DFC11
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00125D0024
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -774,17 +773,17 @@ class NeoCluster(Cluster, CustomClusterMixin):
             """Current Attribute within the Neo Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00125DFC11
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00125D0022
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -798,7 +797,7 @@ class HeimanCluster(Cluster, CustomClusterMixin):
     id: ClassVar[int] = 0x120BFC01
 
     @ChipUtility.classproperty
-    def descriptor(cls) -> ClusterObjectDescriptor:
+    def descriptor(self) -> ClusterObjectDescriptor:
         """Return descriptor for this cluster."""
         return ClusterObjectDescriptor(
             Fields=[
@@ -842,17 +841,17 @@ class HeimanCluster(Cluster, CustomClusterMixin):
             """TamperAlarm Attribute within the Heiman Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x120BFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0010
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -863,17 +862,17 @@ class HeimanCluster(Cluster, CustomClusterMixin):
             """PreheatingState Attribute within the Heiman Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x120BFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0011
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -886,17 +885,17 @@ class HeimanCluster(Cluster, CustomClusterMixin):
             """NoDisturbingState Attribute within the Heiman Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x120BFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0012
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -907,17 +906,17 @@ class HeimanCluster(Cluster, CustomClusterMixin):
             """SensorType Attribute within the Heiman Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x120BFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0013
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -928,17 +927,17 @@ class HeimanCluster(Cluster, CustomClusterMixin):
             """SirenActive Attribute within the Heiman Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x120BFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0014
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -949,17 +948,17 @@ class HeimanCluster(Cluster, CustomClusterMixin):
             """AlarmMute Attribute within the Heiman Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x120BFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0015
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -970,17 +969,17 @@ class HeimanCluster(Cluster, CustomClusterMixin):
             """LowPowerMode Attribute within the Heiman Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x120BFC01
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0016
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -994,7 +993,7 @@ class ThirdRealityMeteringCluster(Cluster, CustomClusterMixin):
     id: ClassVar[int] = 0x130DFC02
 
     @ChipUtility.classproperty
-    def descriptor(cls) -> ClusterObjectDescriptor:
+    def descriptor(self) -> ClusterObjectDescriptor:
         """Return descriptor for this cluster."""
         return ClusterObjectDescriptor(
             Fields=[
@@ -1030,17 +1029,17 @@ class ThirdRealityMeteringCluster(Cluster, CustomClusterMixin):
             """
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130DFC02
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0000
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1051,17 +1050,17 @@ class ThirdRealityMeteringCluster(Cluster, CustomClusterMixin):
             """Divisor Attribute within the ThirdRealityMeteringCluster Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130DFC02
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0302
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1072,17 +1071,17 @@ class ThirdRealityMeteringCluster(Cluster, CustomClusterMixin):
             """Multiplier Attribute within the ThirdRealityMeteringCluster Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130DFC02
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0301
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1104,17 +1103,17 @@ class ThirdRealityMeteringCluster(Cluster, CustomClusterMixin):
             """
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x130DFC02
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0400
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=int)
 
@@ -1128,7 +1127,7 @@ class DraftElectricalMeasurementCluster(Cluster, CustomClusterMixin):
     id: ClassVar[int] = 0x00000B04
 
     @ChipUtility.classproperty
-    def descriptor(cls) -> ClusterObjectDescriptor:
+    def descriptor(self) -> ClusterObjectDescriptor:
         """Return descriptor for this cluster."""
         return ClusterObjectDescriptor(
             Fields=[
@@ -1180,17 +1179,17 @@ class DraftElectricalMeasurementCluster(Cluster, CustomClusterMixin):
             """RmsVoltage Attribute within the DraftElectricalMeasurement Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00000B04
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00000505
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1201,17 +1200,17 @@ class DraftElectricalMeasurementCluster(Cluster, CustomClusterMixin):
             """RmsCurrent Attribute within the DraftElectricalMeasurement Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00000B04
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00000508
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1222,17 +1221,17 @@ class DraftElectricalMeasurementCluster(Cluster, CustomClusterMixin):
             """ActivePower Attribute within the DraftElectricalMeasurement Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00000B04
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x0000050B
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1245,17 +1244,17 @@ class DraftElectricalMeasurementCluster(Cluster, CustomClusterMixin):
             """AcVoltageMultiplier Attribute within the DraftElectricalMeasurement Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00000B04
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00000600
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1266,17 +1265,17 @@ class DraftElectricalMeasurementCluster(Cluster, CustomClusterMixin):
             """AcVoltageDivisor Attribute within the DraftElectricalMeasurement Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00000B04
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00000601
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1289,17 +1288,17 @@ class DraftElectricalMeasurementCluster(Cluster, CustomClusterMixin):
             """AcCurrentMultiplier Attribute within the DraftElectricalMeasurement Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00000B04
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00000602
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1310,17 +1309,17 @@ class DraftElectricalMeasurementCluster(Cluster, CustomClusterMixin):
             """AcCurrentDivisor Attribute within the DraftElectricalMeasurement Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00000B04
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00000603
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1333,17 +1332,17 @@ class DraftElectricalMeasurementCluster(Cluster, CustomClusterMixin):
             """AcPowerMultiplier Attribute within the DraftElectricalMeasurement Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00000B04
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00000604
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 
@@ -1354,17 +1353,17 @@ class DraftElectricalMeasurementCluster(Cluster, CustomClusterMixin):
             """AcPowerDivisor Attribute within the DraftElectricalMeasurement Cluster."""
 
             @ChipUtility.classproperty
-            def cluster_id(cls) -> int:
+            def cluster_id(self) -> int:
                 """Return cluster id."""
                 return 0x00000B04
 
             @ChipUtility.classproperty
-            def attribute_id(cls) -> int:
+            def attribute_id(self) -> int:
                 """Return attribute id."""
                 return 0x00000605
 
             @ChipUtility.classproperty
-            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+            def attribute_type(self) -> ClusterObjectFieldDescriptor:
                 """Return attribute type."""
                 return ClusterObjectFieldDescriptor(Type=uint)
 

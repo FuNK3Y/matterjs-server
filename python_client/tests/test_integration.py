@@ -12,6 +12,7 @@ Run with:
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import logging
 
@@ -22,9 +23,9 @@ import pytest_asyncio
 from matter_server.common.models import APICommand, EventType
 from tests.helpers import (
     MANUAL_PAIRING_CODE,
-    MatterTestClient,
     SERVER_PORT,
     SERVER_WS_URL,
+    MatterTestClient,
     cleanup_temp_storage,
     create_temp_storage_paths,
     kill_process,
@@ -109,10 +110,8 @@ async def env():
     # Teardown
     if _state.get("listen_task") and not _state["listen_task"].done():
         _state["listen_task"].cancel()
-        try:
+        with contextlib.suppress(asyncio.CancelledError, Exception):
             await _state["listen_task"]
-        except (asyncio.CancelledError, Exception):
-            pass
     await client.close()
     await session.close()
     kill_process(_state.get("server_proc"))
@@ -137,7 +136,8 @@ class TestServerCommands:
             body = await resp.json()
             assert "version" in body
             assert "node_count" in body
-            assert isinstance(body["version"], str) and len(body["version"]) > 0
+            assert isinstance(body["version"], str)
+            assert len(body["version"]) > 0
             assert body["node_count"] == 0
 
     async def test_02_server_info_command(self, env):
@@ -987,10 +987,8 @@ class TestServerRestartPersistence:
         # Cancel existing listen task
         if env.get("listen_task") and not env["listen_task"].done():
             env["listen_task"].cancel()
-            try:
+            with contextlib.suppress(asyncio.CancelledError, Exception):
                 await env["listen_task"]
-            except (asyncio.CancelledError, Exception):
-                pass
 
         # Close client
         await client.close()

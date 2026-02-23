@@ -18,3 +18,15 @@ from chip.clusters.ClusterObjects import (  # noqa: F401
     ClusterObjectFieldDescriptor,
 )
 
+# Export list for type checkers
+__all__ = [
+    "Cluster",
+    "ClusterAttributeDescriptor",
+    "ClusterCommand",
+    "ClusterEvent",
+    "ClusterObject",
+    "ClusterObjectDescriptor",
+    "ClusterObjectFieldDescriptor",
+    # Clusters from objects module are exported via *
+]
+

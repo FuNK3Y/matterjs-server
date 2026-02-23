@@ -7,13 +7,14 @@ Provides helpers to start/stop the Matter.js server and test device subprocesses
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import os
+from pathlib import Path
 import shutil
 import signal
 import subprocess
 import tempfile
 import time
-from pathlib import Path
 
 import aiohttp
 
@@ -44,10 +45,8 @@ def cleanup_temp_storage(server_path: str, device_path: str) -> None:
     Silently ignores errors if directories don't exist or can't be removed.
     """
     for path in (server_path, device_path):
-        try:
+        with contextlib.suppress(OSError):
             shutil.rmtree(path)
-        except OSError:
-            pass
 
 
 def start_server(storage_path: str) -> subprocess.Popen:
@@ -118,7 +117,7 @@ async def wait_for_port(port: int, timeout: float = 30.0) -> None:
             async with aiohttp.ClientSession() as session:
                 async with session.ws_connect(f"ws://localhost:{port}/ws", timeout=2):
                     return
-        except (aiohttp.ClientError, OSError, asyncio.TimeoutError):
+        except (TimeoutError, aiohttp.ClientError, OSError):
             await asyncio.sleep(0.5)
     raise TimeoutError(f"Timeout waiting for WebSocket server on port {port}")
 
@@ -147,12 +146,14 @@ async def wait_for_device_ready(process: subprocess.Popen, timeout: float = 30.0
             line = process.stdout.readline()
             if not line:
                 if process.poll() is not None:
-                    raise RuntimeError("Device process exited unexpectedly")
+                    msg = "Device process exited unexpectedly"
+                    raise RuntimeError(msg)
                 time.sleep(0.1)
                 continue
             if "Manual pairing code:" in line or "commissioned" in line.lower():
                 return
-        raise TimeoutError("Timeout waiting for device to be ready")
+        msg = "Timeout waiting for device to be ready"
+        raise TimeoutError(msg)
 
     await loop.run_in_executor(None, _read_until_ready)
     # Give the device's network stack time to fully initialize
@@ -176,7 +177,5 @@ def kill_process(process: subprocess.Popen | None, timeout: float = 5.0) -> None
         process.wait(timeout=timeout)
     except subprocess.TimeoutExpired:
         process.kill()
-        try:
+        with contextlib.suppress(subprocess.TimeoutExpired):
             process.wait(timeout=2)
-        except subprocess.TimeoutExpired:
-            pass

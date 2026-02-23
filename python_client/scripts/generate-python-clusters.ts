@@ -1115,6 +1115,20 @@ function generateObjectsReexport(_clusterNames: string[]): string {
     w.line("    ClusterObjectFieldDescriptor,");
     w.line(")");
     w.blankLine();
+    w.line("# Export list for type checkers");
+    w.line("__all__ = [");
+    w.pushIndent();
+    w.line('"Cluster",');
+    w.line('"ClusterAttributeDescriptor",');
+    w.line('"ClusterCommand",');
+    w.line('"ClusterEvent",');
+    w.line('"ClusterObject",');
+    w.line('"ClusterObjectDescriptor",');
+    w.line('"ClusterObjectFieldDescriptor",');
+    w.line("# Clusters from objects module are exported via *");
+    w.popIndent();
+    w.line("]");
+    w.blankLine();
 
     return w.toString();
 }
@@ -1155,6 +1169,7 @@ function generateDeviceTypes(): string {
 
     w.line('"""');
     w.line(" Device type definitions.");
+    w.blankLine();
     w.line(" This file is auto-generated, DO NOT edit.");
     w.line('"""');
     w.blankLine();
@@ -1181,7 +1196,7 @@ function generateDeviceTypes(): string {
     w.line("device_type: int = 0");
     w.line("clusters: set[type[Cluster]] = set()");
     w.blankLine();
-    w.line("def __init_subclass__(cls, **kwargs) -> None:");
+    w.line("def __init_subclass__(cls, **kwargs: object) -> None:");
     w.pushIndent();
     w.line("super().__init_subclass__(**kwargs)");
     w.line("if cls.device_type != 0:");
