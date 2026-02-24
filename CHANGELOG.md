@@ -7,7 +7,11 @@ This page shows a detailed overview of the changes between versions without the 
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 0.4.2 (2026-02-22)
+- Fix: Sanitize wifi/thread credentials in the log when setting them
+- Fix: Update matter.js to 0.16.10
+
+## 0.4.1 (2026-02-21)
 - Feature: Added a new "Drop-in-replacement" matter-python-client as a replacement for the Matter Server package
 - Fix: Fixes custom-cluster writable attributes
 - Fix: Fixed datatype of a thirdreality custom cluster attribute
