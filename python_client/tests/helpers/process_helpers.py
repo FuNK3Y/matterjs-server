@@ -115,7 +115,7 @@ async def wait_for_port(port: int, timeout: float = 30.0) -> None:
     while time.monotonic() - start < timeout:
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.ws_connect(f"ws://localhost:{port}/ws", timeout=2):
+                async with session.ws_connect(f"ws://localhost:{port}/ws", timeout=2):  # type: ignore[arg-type]
                     return
         except (TimeoutError, aiohttp.ClientError, OSError):
             await asyncio.sleep(0.5)
@@ -143,6 +143,8 @@ async def wait_for_device_ready(process: subprocess.Popen, timeout: float = 30.0
         """Blocking reader, run via run_in_executor to avoid stalling the event loop."""
         start = time.monotonic()
         while time.monotonic() - start < timeout:
+            if process.stdout is None:
+                raise RuntimeError("Process stdout is None")
             line = process.stdout.readline()
             if not line:
                 if process.poll() is not None:

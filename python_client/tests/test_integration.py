@@ -15,12 +15,16 @@ import asyncio
 import contextlib
 import json
 import logging
+from typing import TYPE_CHECKING
 
 import aiohttp
 import pytest
 import pytest_asyncio
 
 from matter_server.common.models import APICommand, EventType
+
+if TYPE_CHECKING:
+    from chip.clusters import Objects as Clusters
 from tests.helpers import (
     MANUAL_PAIRING_CODE,
     SERVER_PORT,
@@ -84,6 +88,7 @@ async def env():
     session = aiohttp.ClientSession()
     client = MatterTestClient(SERVER_WS_URL, session)
     nodes, listen_task = await client.start_listening_and_get_nodes()
+    assert client.server_info is not None
     logger.info(
         "Connected to server, schema version: %s, initial nodes: %d",
         client.server_info.schema_version,
@@ -1121,7 +1126,7 @@ class TestDecommissioning:
 # ============================================================================
 
 
-def _onoff_command(name: str):
+def _onoff_command(name: str) -> Clusters.ClusterCommand:
     """Create a chip.clusters OnOff command instance by name.
 
     The chip SDK cluster command objects are used by send_device_command.
