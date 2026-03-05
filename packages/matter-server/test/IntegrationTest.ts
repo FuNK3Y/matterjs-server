@@ -517,6 +517,7 @@ describe("Integration Test", function () {
         it("should interview node and receive node_updated event", async function () {
             client.clearEvents();
 
+            const beforeInterview = new Date();
             await client.interviewNode(commissionedNodeId);
 
             // Should receive node_updated event
@@ -526,6 +527,13 @@ describe("Integration Test", function () {
                 10_000,
             );
             expect(event).to.exist;
+
+            // Verify last_interview is set and reflects a recent timestamp
+            const node = event.data as { node_id: number; last_interview: string | null };
+            expect(node.last_interview).to.be.a("string");
+            // Format is "YYYY-MM-DDTHH:MM:SS.mmm000" — parse the millisecond-precision prefix
+            const interviewDate = new Date((node.last_interview as string).slice(0, 23));
+            expect(interviewDate.getTime()).to.be.at.least(beforeInterview.getTime());
         });
     });
 
@@ -932,6 +940,31 @@ describe("Integration Test", function () {
     });
 
     // =========================================================================
+    // NodeLabel Write + Attribute Event Test (pre-restart baseline)
+    // =========================================================================
+
+    describe("NodeLabel Persistence Baseline", function () {
+        it("should write NodeLabel and receive attribute_updated event before restart", async function () {
+            client.clearEvents();
+
+            // Write a distinct label that we can verify survives the server restart
+            await client.writeAttribute(commissionedNodeId, "0/40/5", "Restart Persistence Label");
+
+            // Wait for the subscription to report the change back
+            const event = await client.waitForEvent(
+                "attribute_updated",
+                data => {
+                    const [eventNodeId, path] = data as [number, string, unknown];
+                    return eventNodeId === commissionedNodeId && path === "0/40/5";
+                },
+                10_000,
+            );
+            const [, , value] = event.data as [number, string, string];
+            expect(value).to.equal("Restart Persistence Label");
+        });
+    });
+
+    // =========================================================================
     // Server Restart Persistence Test
     // =========================================================================
 
@@ -1061,9 +1094,12 @@ describe("Integration Test", function () {
 
     describe("Commission On Network", function () {
         it("should commission device using passcode and long discriminator", async function () {
-            // After decommissioning the device returns to commissioning mode.
-            // Give it time to re-advertise via mDNS.
-            await new Promise(r => setTimeout(r, 3000));
+            // After decommissioning, the device goes through two phases:
+            // 1. Immediately advertises commissioning (~1.7s after removeFabric)
+            // 2. Full factory reset (~7-8s after removeFabric), kills all sessions, re-advertises
+            // We must wait past the factory reset to avoid commissioning against a transient session
+            // that will be destroyed mid-way. 12 seconds gives a safe margin.
+            await new Promise(r => setTimeout(r, 12_000));
 
             const node = await client.commissionOnNetwork(DEVICE_PASSCODE, 2, DEVICE_DISCRIMINATOR);
             const networkNodeId = Number(node.node_id);
