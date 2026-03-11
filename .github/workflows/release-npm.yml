@@ -204,7 +204,7 @@ jobs:
 
       - name: Log in to GitHub Container Registry
         if: steps.automerge.outputs.mergeResult == 'merged'
-        uses: docker/login-action@v3.7.0
+        uses: docker/login-action@v4.0.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
@@ -212,7 +212,7 @@ jobs:
 
       - name: Set up Docker Buildx
         if: steps.automerge.outputs.mergeResult == 'merged'
-        uses: docker/setup-buildx-action@v3.12.0
+        uses: docker/setup-buildx-action@v4.0.0
 
       - name: Version number for Docker tags
         if: steps.automerge.outputs.mergeResult == 'merged'
@@ -226,7 +226,7 @@ jobs:
 
       - name: Build and push Docker image (release)
         if: steps.automerge.outputs.mergeResult == 'merged' && !contains(steps.version.outputs.result, '-')
-        uses: docker/build-push-action@v6.19.2
+        uses: docker/build-push-action@v7.0.0
         with:
           context: ./docker/matterjs-server
           platforms: linux/amd64,linux/arm64
@@ -244,7 +244,7 @@ jobs:
 
       - name: Build and push Docker image (pre-release)
         if: steps.automerge.outputs.mergeResult == 'merged' && contains(steps.version.outputs.result, '-')
-        uses: docker/build-push-action@v6.19.2
+        uses: docker/build-push-action@v7.0.0
         with:
           context: ./docker/matterjs-server
           platforms: linux/amd64,linux/arm64
