@@ -34,9 +34,10 @@ class TimeSynchronization(Cluster):
                 ClusterObjectFieldDescriptor(Label="nTPServerAvailable", Tag=0x00000009, Type=typing.Optional[bool]),
                 ClusterObjectFieldDescriptor(Label="timeZoneListMaxSize", Tag=0x0000000A, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="dSTOffsetListMaxSize", Tag=0x0000000B, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="supportsDnsResolve", Tag=0x0000000C, Type=typing.Optional[bool]),
+                ClusterObjectFieldDescriptor(Label="supportsDNSResolve", Tag=0x0000000C, Type=typing.Optional[bool]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -54,9 +55,10 @@ class TimeSynchronization(Cluster):
     nTPServerAvailable: 'typing.Optional[bool]' = None
     timeZoneListMaxSize: 'typing.Optional[uint]' = None
     dSTOffsetListMaxSize: 'typing.Optional[uint]' = None
-    supportsDnsResolve: 'typing.Optional[bool]' = None
+    supportsDNSResolve: 'typing.Optional[bool]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
@@ -79,16 +81,16 @@ class TimeSynchronization(Cluster):
             kUnknown = 0x01
             kAdmin = 0x02
             kNodeTimeCluster = 0x03
-            kNonMatterSntp = 0x04
-            kNonMatterNtp = 0x05
-            kMatterSntp = 0x06
-            kMatterNtp = 0x07
-            kMixedNtp = 0x08
-            kNonMatterSntpnts = 0x09
-            kNonMatterNtpnts = 0x0A
-            kMatterSntpnts = 0x0B
-            kMatterNtpnts = 0x0C
-            kMixedNtpnts = 0x0D
+            kNonMatterSNTP = 0x04
+            kNonMatterNTP = 0x05
+            kMatterSNTP = 0x06
+            kMatterNTP = 0x07
+            kMixedNTP = 0x08
+            kNonMatterSNTPNTS = 0x09
+            kNonMatterNTPNTS = 0x0A
+            kMatterSNTPNTS = 0x0B
+            kMatterNTPNTS = 0x0C
+            kMixedNTPNTS = 0x0D
             kCloudSource = 0x0E
             kPtp = 0x0F
             kGnss = 0x10
@@ -119,8 +121,8 @@ class TimeSynchronization(Cluster):
     class Bitmaps:
         class Feature(IntFlag):
             kTimeZone = 0x1
-            kNtpClient = 0x2
-            kNtpServer = 0x4
+            kNTPClient = 0x2
+            kNTPServer = 0x4
             kTimeSyncClient = 0x8
 
     class Structs:
@@ -479,7 +481,7 @@ class TimeSynchronization(Cluster):
             value: 'typing.Optional[uint]' = None
 
         @dataclass
-        class SupportsDnsResolve(ClusterAttributeDescriptor):
+        class SupportsDNSResolve(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000038
@@ -519,6 +521,22 @@ class TimeSynchronization(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x00000038
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:
@@ -591,7 +609,6 @@ class TimeSynchronization(Cluster):
                     Fields=[
                     ])
 
-            pass
 
         @dataclass
         class DSTStatus(ClusterEvent):
@@ -649,7 +666,6 @@ class TimeSynchronization(Cluster):
                     Fields=[
                     ])
 
-            pass
 
         @dataclass
         class MissingTrustedTimeSource(ClusterEvent):
@@ -667,4 +683,3 @@ class TimeSynchronization(Cluster):
                     Fields=[
                     ])
 
-            pass

@@ -65,12 +65,13 @@ class DoorLock(Cluster):
                 ClusterObjectFieldDescriptor(Label="aliroReaderGroupSubIdentifier", Tag=0x00000082, Type=typing.Optional[bytes]),
                 ClusterObjectFieldDescriptor(Label="aliroExpeditedTransactionSupportedProtocolVersions", Tag=0x00000083, Type=typing.Optional[typing.List[typing.Optional[bytes]]]),
                 ClusterObjectFieldDescriptor(Label="aliroGroupResolvingKey", Tag=0x00000084, Type=typing.Union[None, Nullable, bytes]),
-                ClusterObjectFieldDescriptor(Label="aliroSupportedBleuwbProtocolVersions", Tag=0x00000085, Type=typing.Optional[typing.List[typing.Optional[bytes]]]),
-                ClusterObjectFieldDescriptor(Label="aliroBleAdvertisingVersion", Tag=0x00000086, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="aliroSupportedBLEUWBProtocolVersions", Tag=0x00000085, Type=typing.Optional[typing.List[typing.Optional[bytes]]]),
+                ClusterObjectFieldDescriptor(Label="aliroBLEAdvertisingVersion", Tag=0x00000086, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="numberOfAliroCredentialIssuerKeysSupported", Tag=0x00000087, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="numberOfAliroEndpointKeysSupported", Tag=0x00000088, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -118,12 +119,13 @@ class DoorLock(Cluster):
     aliroReaderGroupSubIdentifier: 'typing.Optional[bytes]' = None
     aliroExpeditedTransactionSupportedProtocolVersions: 'typing.Optional[typing.List[typing.Optional[bytes]]]' = None
     aliroGroupResolvingKey: 'typing.Union[None, Nullable, bytes]' = None
-    aliroSupportedBleuwbProtocolVersions: 'typing.Optional[typing.List[typing.Optional[bytes]]]' = None
-    aliroBleAdvertisingVersion: 'typing.Optional[uint]' = None
+    aliroSupportedBLEUWBProtocolVersions: 'typing.Optional[typing.List[typing.Optional[bytes]]]' = None
+    aliroBLEAdvertisingVersion: 'typing.Optional[uint]' = None
     numberOfAliroCredentialIssuerKeysSupported: 'typing.Optional[uint]' = None
     numberOfAliroEndpointKeysSupported: 'typing.Optional[uint]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
@@ -155,7 +157,7 @@ class DoorLock(Cluster):
             kUnknownEnumValue = 3
 
         class CredentialTypeEnum(MatterIntEnum):
-            kProgrammingPin = 0x00
+            kProgrammingPIN = 0x00
             kPin = 0x01
             kRfid = 0x02
             kFingerprint = 0x03
@@ -326,9 +328,9 @@ class DoorLock(Cluster):
             kUnknownEnumValue = 12
 
         class LEDSettingEnum(MatterIntEnum):
-            kNoLedSignal = 0x00
-            kNoLedSignalAccessAllowed = 0x01
-            kLedSignalAll = 0x02
+            kNoLEDSignal = 0x00
+            kNoLEDSignalAccessAllowed = 0x01
+            kLEDSignalAll = 0x02
             # All received enum values that are not listed above will be mapped
             # to kUnknownEnumValue. This is a helper enum value that should only
             # be used by code to process how it handles receiving an unknown
@@ -379,7 +381,7 @@ class DoorLock(Cluster):
             kHolidaySchedules = 0x800
             kUnbolting = 0x1000
             kAliroProvisioning = 0x2000
-            kAliroBleuwb = 0x4000
+            kAliroBLEUWB = 0x4000
 
         class DaysMaskBitmap(IntFlag):
             kSunday = 0x1
@@ -409,7 +411,7 @@ class DoorLock(Cluster):
             kRemoteInterface = 0x4
             kSoundVolume = 0x20
             kAutoRelockTime = 0x40
-            kLedSettings = 0x80
+            kLEDSettings = 0x80
 
         class LocalProgrammingFeaturesBitmap(IntFlag):
             kAddUsersCredentialsSchedules = 0x1
@@ -1966,7 +1968,7 @@ class DoorLock(Cluster):
             value: 'typing.Union[None, Nullable, bytes]' = None
 
         @dataclass
-        class AliroSupportedBleuwbProtocolVersions(ClusterAttributeDescriptor):
+        class AliroSupportedBLEUWBProtocolVersions(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000101
@@ -1982,7 +1984,7 @@ class DoorLock(Cluster):
             value: 'typing.Optional[typing.List[typing.Optional[bytes]]]' = None
 
         @dataclass
-        class AliroBleAdvertisingVersion(ClusterAttributeDescriptor):
+        class AliroBLEAdvertisingVersion(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000101
@@ -2054,6 +2056,22 @@ class DoorLock(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x00000101
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:

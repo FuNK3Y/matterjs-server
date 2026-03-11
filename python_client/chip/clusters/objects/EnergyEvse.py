@@ -47,6 +47,7 @@ class EnergyEvse(Cluster):
                 ClusterObjectFieldDescriptor(Label="sessionEnergyDischarged", Tag=0x00000043, Type=typing.Union[None, Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -77,6 +78,7 @@ class EnergyEvse(Cluster):
     sessionEnergyDischarged: 'typing.Union[None, Nullable, uint]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
@@ -122,7 +124,7 @@ class EnergyEvse(Cluster):
             kPowerQuality = 0x09
             kPilotShortCircuit = 0x0A
             kEmergencyStop = 0x0B
-            kEvDisconnected = 0x0C
+            kEVDisconnected = 0x0C
             kWrongPowerSupply = 0x0D
             kLiveNeutralSwap = 0x0E
             kOverTemperature = 0x0F
@@ -134,8 +136,8 @@ class EnergyEvse(Cluster):
             kUnknownEnumValue = 256
 
         class EnergyTransferStoppedReasonEnum(MatterIntEnum):
-            kEvStopped = 0x00
-            kEvseStopped = 0x01
+            kEVStopped = 0x00
+            kEVSEStopped = 0x01
             kOther = 0x02
             # All received enum values that are not listed above will be mapped
             # to kUnknownEnumValue. This is a helper enum value that should only
@@ -149,7 +151,7 @@ class EnergyEvse(Cluster):
             kSoCReporting = 0x2
             kPlugAndCharge = 0x4
             kRfid = 0x8
-            kV2X = 0x10
+            kV2x = 0x10
 
         class TargetDayOfWeekBitmap(IntFlag):
             kSunday = 0x1
@@ -710,6 +712,22 @@ class EnergyEvse(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x00000099
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:

@@ -27,9 +27,9 @@ class OccupancySensing(Cluster):
                 ClusterObjectFieldDescriptor(Label="occupancySensorTypeBitmap", Tag=0x00000002, Type=OccupancySensing.Bitmaps.OccupancySensorTypeBitmap),
                 ClusterObjectFieldDescriptor(Label="holdTime", Tag=0x00000003, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="holdTimeLimits", Tag=0x00000004, Type=typing.Optional[OccupancySensing.Structs.HoldTimeLimitsStruct]),
-                ClusterObjectFieldDescriptor(Label="pirOccupiedToUnoccupiedDelay", Tag=0x00000010, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="pirUnoccupiedToOccupiedDelay", Tag=0x00000011, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="pirUnoccupiedToOccupiedThreshold", Tag=0x00000012, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="pIROccupiedToUnoccupiedDelay", Tag=0x00000010, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="pIRUnoccupiedToOccupiedDelay", Tag=0x00000011, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="pIRUnoccupiedToOccupiedThreshold", Tag=0x00000012, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="ultrasonicOccupiedToUnoccupiedDelay", Tag=0x00000020, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="ultrasonicUnoccupiedToOccupiedDelay", Tag=0x00000021, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="ultrasonicUnoccupiedToOccupiedThreshold", Tag=0x00000022, Type=typing.Optional[uint]),
@@ -38,6 +38,7 @@ class OccupancySensing(Cluster):
                 ClusterObjectFieldDescriptor(Label="physicalContactUnoccupiedToOccupiedThreshold", Tag=0x00000032, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -48,9 +49,9 @@ class OccupancySensing(Cluster):
     occupancySensorTypeBitmap: 'OccupancySensing.Bitmaps.OccupancySensorTypeBitmap' = 0
     holdTime: 'typing.Optional[uint]' = None
     holdTimeLimits: 'typing.Optional[OccupancySensing.Structs.HoldTimeLimitsStruct]' = None
-    pirOccupiedToUnoccupiedDelay: 'typing.Optional[uint]' = None
-    pirUnoccupiedToOccupiedDelay: 'typing.Optional[uint]' = None
-    pirUnoccupiedToOccupiedThreshold: 'typing.Optional[uint]' = None
+    pIROccupiedToUnoccupiedDelay: 'typing.Optional[uint]' = None
+    pIRUnoccupiedToOccupiedDelay: 'typing.Optional[uint]' = None
+    pIRUnoccupiedToOccupiedThreshold: 'typing.Optional[uint]' = None
     ultrasonicOccupiedToUnoccupiedDelay: 'typing.Optional[uint]' = None
     ultrasonicUnoccupiedToOccupiedDelay: 'typing.Optional[uint]' = None
     ultrasonicUnoccupiedToOccupiedThreshold: 'typing.Optional[uint]' = None
@@ -59,6 +60,7 @@ class OccupancySensing(Cluster):
     physicalContactUnoccupiedToOccupiedThreshold: 'typing.Optional[uint]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
@@ -67,7 +69,7 @@ class OccupancySensing(Cluster):
         class OccupancySensorTypeEnum(MatterIntEnum):
             kPir = 0x00
             kUltrasonic = 0x01
-            kPirAndUltrasonic = 0x02
+            kPIRAndUltrasonic = 0x02
             kPhysicalContact = 0x03
             # All received enum values that are not listed above will be mapped
             # to kUnknownEnumValue. This is a helper enum value that should only
@@ -83,7 +85,7 @@ class OccupancySensing(Cluster):
             kPhysicalContact = 0x8
             kActiveInfrared = 0x10
             kRadar = 0x20
-            kRfSensing = 0x40
+            kRFSensing = 0x40
             kVision = 0x80
 
         class OccupancyBitmap(IntFlag):
@@ -192,7 +194,7 @@ class OccupancySensing(Cluster):
             value: 'typing.Optional[OccupancySensing.Structs.HoldTimeLimitsStruct]' = None
 
         @dataclass
-        class PirOccupiedToUnoccupiedDelay(ClusterAttributeDescriptor):
+        class PIROccupiedToUnoccupiedDelay(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000406
@@ -208,7 +210,7 @@ class OccupancySensing(Cluster):
             value: 'typing.Optional[uint]' = None
 
         @dataclass
-        class PirUnoccupiedToOccupiedDelay(ClusterAttributeDescriptor):
+        class PIRUnoccupiedToOccupiedDelay(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000406
@@ -224,7 +226,7 @@ class OccupancySensing(Cluster):
             value: 'typing.Optional[uint]' = None
 
         @dataclass
-        class PirUnoccupiedToOccupiedThreshold(ClusterAttributeDescriptor):
+        class PIRUnoccupiedToOccupiedThreshold(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000406
@@ -360,6 +362,22 @@ class OccupancySensing(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x00000406
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:

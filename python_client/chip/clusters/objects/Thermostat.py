@@ -30,9 +30,9 @@ class Thermostat(Cluster):
                 ClusterObjectFieldDescriptor(Label="absMaxHeatSetpointLimit", Tag=0x00000004, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="absMinCoolSetpointLimit", Tag=0x00000005, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="absMaxCoolSetpointLimit", Tag=0x00000006, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="piCoolingDemand", Tag=0x00000007, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="piHeatingDemand", Tag=0x00000008, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="hvacSystemTypeConfiguration", Tag=0x00000009, Type=typing.Optional[Thermostat.Bitmaps.HVACSystemTypeBitmap]),
+                ClusterObjectFieldDescriptor(Label="pICoolingDemand", Tag=0x00000007, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="pIHeatingDemand", Tag=0x00000008, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="hVACSystemTypeConfiguration", Tag=0x00000009, Type=typing.Optional[Thermostat.Bitmaps.HVACSystemTypeBitmap]),
                 ClusterObjectFieldDescriptor(Label="localTemperatureCalibration", Tag=0x00000010, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="occupiedCoolingSetpoint", Tag=0x00000011, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="occupiedHeatingSetpoint", Tag=0x00000012, Type=typing.Optional[uint]),
@@ -64,14 +64,14 @@ class Thermostat(Cluster):
                 ClusterObjectFieldDescriptor(Label="unoccupiedSetbackMin", Tag=0x00000038, Type=typing.Union[None, Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="unoccupiedSetbackMax", Tag=0x00000039, Type=typing.Union[None, Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="emergencyHeatDelta", Tag=0x0000003A, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="acType", Tag=0x00000040, Type=typing.Optional[Thermostat.Enums.ACTypeEnum]),
-                ClusterObjectFieldDescriptor(Label="acCapacity", Tag=0x00000041, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="acRefrigerantType", Tag=0x00000042, Type=typing.Optional[Thermostat.Enums.ACRefrigerantTypeEnum]),
-                ClusterObjectFieldDescriptor(Label="acCompressorType", Tag=0x00000043, Type=typing.Optional[Thermostat.Enums.ACCompressorTypeEnum]),
-                ClusterObjectFieldDescriptor(Label="acErrorCode", Tag=0x00000044, Type=typing.Optional[Thermostat.Bitmaps.ACErrorCodeBitmap]),
-                ClusterObjectFieldDescriptor(Label="acLouverPosition", Tag=0x00000045, Type=typing.Optional[Thermostat.Enums.ACLouverPositionEnum]),
-                ClusterObjectFieldDescriptor(Label="acCoilTemperature", Tag=0x00000046, Type=typing.Union[None, Nullable, uint]),
-                ClusterObjectFieldDescriptor(Label="acCapacityFormat", Tag=0x00000047, Type=typing.Optional[Thermostat.Enums.ACCapacityFormatEnum]),
+                ClusterObjectFieldDescriptor(Label="aCType", Tag=0x00000040, Type=typing.Optional[Thermostat.Enums.ACTypeEnum]),
+                ClusterObjectFieldDescriptor(Label="aCCapacity", Tag=0x00000041, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="aCRefrigerantType", Tag=0x00000042, Type=typing.Optional[Thermostat.Enums.ACRefrigerantTypeEnum]),
+                ClusterObjectFieldDescriptor(Label="aCCompressorType", Tag=0x00000043, Type=typing.Optional[Thermostat.Enums.ACCompressorTypeEnum]),
+                ClusterObjectFieldDescriptor(Label="aCErrorCode", Tag=0x00000044, Type=typing.Optional[Thermostat.Bitmaps.ACErrorCodeBitmap]),
+                ClusterObjectFieldDescriptor(Label="aCLouverPosition", Tag=0x00000045, Type=typing.Optional[Thermostat.Enums.ACLouverPositionEnum]),
+                ClusterObjectFieldDescriptor(Label="aCCoilTemperature", Tag=0x00000046, Type=typing.Union[None, Nullable, uint]),
+                ClusterObjectFieldDescriptor(Label="aCCapacityFormat", Tag=0x00000047, Type=typing.Optional[Thermostat.Enums.ACCapacityFormatEnum]),
                 ClusterObjectFieldDescriptor(Label="presetTypes", Tag=0x00000048, Type=typing.Optional[typing.List[typing.Optional[Thermostat.Structs.PresetTypeStruct]]]),
                 ClusterObjectFieldDescriptor(Label="scheduleTypes", Tag=0x00000049, Type=typing.Optional[typing.List[typing.Optional[Thermostat.Structs.ScheduleTypeStruct]]]),
                 ClusterObjectFieldDescriptor(Label="numberOfPresets", Tag=0x0000004A, Type=typing.Optional[uint]),
@@ -85,6 +85,7 @@ class Thermostat(Cluster):
                 ClusterObjectFieldDescriptor(Label="setpointHoldExpiryTimestamp", Tag=0x00000052, Type=typing.Union[None, Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -97,9 +98,9 @@ class Thermostat(Cluster):
     absMaxHeatSetpointLimit: 'typing.Optional[uint]' = None
     absMinCoolSetpointLimit: 'typing.Optional[uint]' = None
     absMaxCoolSetpointLimit: 'typing.Optional[uint]' = None
-    piCoolingDemand: 'typing.Optional[uint]' = None
-    piHeatingDemand: 'typing.Optional[uint]' = None
-    hvacSystemTypeConfiguration: 'typing.Optional[Thermostat.Bitmaps.HVACSystemTypeBitmap]' = None
+    pICoolingDemand: 'typing.Optional[uint]' = None
+    pIHeatingDemand: 'typing.Optional[uint]' = None
+    hVACSystemTypeConfiguration: 'typing.Optional[Thermostat.Bitmaps.HVACSystemTypeBitmap]' = None
     localTemperatureCalibration: 'typing.Optional[uint]' = None
     occupiedCoolingSetpoint: 'typing.Optional[uint]' = None
     occupiedHeatingSetpoint: 'typing.Optional[uint]' = None
@@ -131,14 +132,14 @@ class Thermostat(Cluster):
     unoccupiedSetbackMin: 'typing.Union[None, Nullable, uint]' = None
     unoccupiedSetbackMax: 'typing.Union[None, Nullable, uint]' = None
     emergencyHeatDelta: 'typing.Optional[uint]' = None
-    acType: 'typing.Optional[Thermostat.Enums.ACTypeEnum]' = None
-    acCapacity: 'typing.Optional[uint]' = None
-    acRefrigerantType: 'typing.Optional[Thermostat.Enums.ACRefrigerantTypeEnum]' = None
-    acCompressorType: 'typing.Optional[Thermostat.Enums.ACCompressorTypeEnum]' = None
-    acErrorCode: 'typing.Optional[Thermostat.Bitmaps.ACErrorCodeBitmap]' = None
-    acLouverPosition: 'typing.Optional[Thermostat.Enums.ACLouverPositionEnum]' = None
-    acCoilTemperature: 'typing.Union[None, Nullable, uint]' = None
-    acCapacityFormat: 'typing.Optional[Thermostat.Enums.ACCapacityFormatEnum]' = None
+    aCType: 'typing.Optional[Thermostat.Enums.ACTypeEnum]' = None
+    aCCapacity: 'typing.Optional[uint]' = None
+    aCRefrigerantType: 'typing.Optional[Thermostat.Enums.ACRefrigerantTypeEnum]' = None
+    aCCompressorType: 'typing.Optional[Thermostat.Enums.ACCompressorTypeEnum]' = None
+    aCErrorCode: 'typing.Optional[Thermostat.Bitmaps.ACErrorCodeBitmap]' = None
+    aCLouverPosition: 'typing.Optional[Thermostat.Enums.ACLouverPositionEnum]' = None
+    aCCoilTemperature: 'typing.Union[None, Nullable, uint]' = None
+    aCCapacityFormat: 'typing.Optional[Thermostat.Enums.ACCapacityFormatEnum]' = None
     presetTypes: 'typing.Optional[typing.List[typing.Optional[Thermostat.Structs.PresetTypeStruct]]]' = None
     scheduleTypes: 'typing.Optional[typing.List[typing.Optional[Thermostat.Structs.ScheduleTypeStruct]]]' = None
     numberOfPresets: 'typing.Optional[uint]' = None
@@ -152,13 +153,14 @@ class Thermostat(Cluster):
     setpointHoldExpiryTimestamp: 'typing.Union[None, Nullable, uint]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
 
     class Enums:
         class ACCapacityFormatEnum(MatterIntEnum):
-            kBtUh = 0x00
+            kBTUh = 0x00
             # All received enum values that are not listed above will be mapped
             # to kUnknownEnumValue. This is a helper enum value that should only
             # be used by code to process how it handles receiving an unknown
@@ -191,8 +193,8 @@ class Thermostat(Cluster):
         class ACRefrigerantTypeEnum(MatterIntEnum):
             kUnknown = 0x00
             kR22 = 0x01
-            kR410A = 0x02
-            kR407C = 0x03
+            kR410a = 0x02
+            kR407c = 0x03
             # All received enum values that are not listed above will be mapped
             # to kUnknownEnumValue. This is a helper enum value that should only
             # be used by code to process how it handles receiving an unknown
@@ -794,7 +796,7 @@ class Thermostat(Cluster):
             value: 'typing.Optional[uint]' = None
 
         @dataclass
-        class PiCoolingDemand(ClusterAttributeDescriptor):
+        class PICoolingDemand(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -810,7 +812,7 @@ class Thermostat(Cluster):
             value: 'typing.Optional[uint]' = None
 
         @dataclass
-        class PiHeatingDemand(ClusterAttributeDescriptor):
+        class PIHeatingDemand(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -826,7 +828,7 @@ class Thermostat(Cluster):
             value: 'typing.Optional[uint]' = None
 
         @dataclass
-        class HvacSystemTypeConfiguration(ClusterAttributeDescriptor):
+        class HVACSystemTypeConfiguration(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -1338,7 +1340,7 @@ class Thermostat(Cluster):
             value: 'typing.Optional[uint]' = None
 
         @dataclass
-        class AcType(ClusterAttributeDescriptor):
+        class ACType(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -1354,7 +1356,7 @@ class Thermostat(Cluster):
             value: 'typing.Optional[Thermostat.Enums.ACTypeEnum]' = None
 
         @dataclass
-        class AcCapacity(ClusterAttributeDescriptor):
+        class ACCapacity(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -1370,7 +1372,7 @@ class Thermostat(Cluster):
             value: 'typing.Optional[uint]' = None
 
         @dataclass
-        class AcRefrigerantType(ClusterAttributeDescriptor):
+        class ACRefrigerantType(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -1386,7 +1388,7 @@ class Thermostat(Cluster):
             value: 'typing.Optional[Thermostat.Enums.ACRefrigerantTypeEnum]' = None
 
         @dataclass
-        class AcCompressorType(ClusterAttributeDescriptor):
+        class ACCompressorType(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -1402,7 +1404,7 @@ class Thermostat(Cluster):
             value: 'typing.Optional[Thermostat.Enums.ACCompressorTypeEnum]' = None
 
         @dataclass
-        class AcErrorCode(ClusterAttributeDescriptor):
+        class ACErrorCode(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -1418,7 +1420,7 @@ class Thermostat(Cluster):
             value: 'typing.Optional[Thermostat.Bitmaps.ACErrorCodeBitmap]' = None
 
         @dataclass
-        class AcLouverPosition(ClusterAttributeDescriptor):
+        class ACLouverPosition(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -1434,7 +1436,7 @@ class Thermostat(Cluster):
             value: 'typing.Optional[Thermostat.Enums.ACLouverPositionEnum]' = None
 
         @dataclass
-        class AcCoilTemperature(ClusterAttributeDescriptor):
+        class ACCoilTemperature(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -1450,7 +1452,7 @@ class Thermostat(Cluster):
             value: 'typing.Union[None, Nullable, uint]' = None
 
         @dataclass
-        class AcCapacityFormat(ClusterAttributeDescriptor):
+        class ACCapacityFormat(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000201
@@ -1666,6 +1668,22 @@ class Thermostat(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x00000201
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:

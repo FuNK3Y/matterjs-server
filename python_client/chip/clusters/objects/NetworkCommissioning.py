@@ -35,6 +35,7 @@ class NetworkCommissioning(Cluster):
                 ClusterObjectFieldDescriptor(Label="threadVersion", Tag=0x0000000A, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -53,18 +54,19 @@ class NetworkCommissioning(Cluster):
     threadVersion: 'typing.Optional[uint]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
 
     class Enums:
         class WiFiBandEnum(MatterIntEnum):
-            k2G4 = 0x00
-            k3G65 = 0x01
-            k5G = 0x02
-            k6G = 0x03
-            k60G = 0x04
-            k1G = 0x05
+            k2g4 = 0x00
+            k3g65 = 0x01
+            k5g = 0x02
+            k6g = 0x03
+            k60g = 0x04
+            k1g = 0x05
             # All received enum values that are not listed above will be mapped
             # to kUnknownEnumValue. This is a helper enum value that should only
             # be used by code to process how it handles receiving an unknown
@@ -75,15 +77,15 @@ class NetworkCommissioning(Cluster):
             kSuccess = 0x00
             kOutOfRange = 0x01
             kBoundsExceeded = 0x02
-            kNetworkIdNotFound = 0x03
-            kDuplicateNetworkId = 0x04
+            kNetworkIDNotFound = 0x03
+            kDuplicateNetworkID = 0x04
             kNetworkNotFound = 0x05
             kRegulatoryError = 0x06
             kAuthFailure = 0x07
             kUnsupportedSecurity = 0x08
             kOtherConnectionFailure = 0x09
-            kIpv6Failed = 0x0A
-            kIpBindFailed = 0x0B
+            kIPV6Failed = 0x0A
+            kIPBindFailed = 0x0B
             kUnknownError = 0x0C
             # All received enum values that are not listed above will be mapped
             # to kUnknownEnumValue. This is a helper enum value that should only
@@ -548,6 +550,22 @@ class NetworkCommissioning(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x00000031
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:

@@ -34,6 +34,7 @@ class GeneralDiagnostics(Cluster):
                 ClusterObjectFieldDescriptor(Label="doNotUse", Tag=0x00000009, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -51,6 +52,7 @@ class GeneralDiagnostics(Cluster):
     doNotUse: 'typing.Optional[uint]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
@@ -79,8 +81,8 @@ class GeneralDiagnostics(Cluster):
             kWiFiFault = 0x01
             kCellularFault = 0x02
             kThreadFault = 0x03
-            kNfcFault = 0x04
-            kBleFault = 0x05
+            kNFCFault = 0x04
+            kBLEFault = 0x05
             kEthernetFault = 0x06
             # All received enum values that are not listed above will be mapped
             # to kUnknownEnumValue. This is a helper enum value that should only
@@ -138,21 +140,21 @@ class GeneralDiagnostics(Cluster):
                     Fields=[
                         ClusterObjectFieldDescriptor(Label="name", Tag=0, Type=str),
                         ClusterObjectFieldDescriptor(Label="isOperational", Tag=1, Type=bool),
-                        ClusterObjectFieldDescriptor(Label="offPremiseServicesReachableIPv4", Tag=2, Type=typing.Union[Nullable, bool]),
-                        ClusterObjectFieldDescriptor(Label="offPremiseServicesReachableIPv6", Tag=3, Type=typing.Union[Nullable, bool]),
+                        ClusterObjectFieldDescriptor(Label="offPremiseServicesReachableIPV4", Tag=2, Type=typing.Union[Nullable, bool]),
+                        ClusterObjectFieldDescriptor(Label="offPremiseServicesReachableIPV6", Tag=3, Type=typing.Union[Nullable, bool]),
                         ClusterObjectFieldDescriptor(Label="hardwareAddress", Tag=4, Type=bytes),
-                        ClusterObjectFieldDescriptor(Label="iPv4Addresses", Tag=5, Type=typing.List[typing.Optional[bytes]]),
-                        ClusterObjectFieldDescriptor(Label="iPv6Addresses", Tag=6, Type=typing.List[typing.Optional[bytes]]),
+                        ClusterObjectFieldDescriptor(Label="iPV4Addresses", Tag=5, Type=typing.List[typing.Optional[bytes]]),
+                        ClusterObjectFieldDescriptor(Label="iPV6Addresses", Tag=6, Type=typing.List[typing.Optional[bytes]]),
                         ClusterObjectFieldDescriptor(Label="type", Tag=7, Type=GeneralDiagnostics.Enums.InterfaceTypeEnum),
                     ])
 
             name: 'str' = ""
             isOperational: 'bool' = False
-            offPremiseServicesReachableIPv4: 'typing.Union[Nullable, bool]' = NullValue
-            offPremiseServicesReachableIPv6: 'typing.Union[Nullable, bool]' = NullValue
+            offPremiseServicesReachableIPV4: 'typing.Union[Nullable, bool]' = NullValue
+            offPremiseServicesReachableIPV6: 'typing.Union[Nullable, bool]' = NullValue
             hardwareAddress: 'bytes' = b""
-            iPv4Addresses: 'typing.List[typing.Optional[bytes]]' = field(default_factory=lambda: [])
-            iPv6Addresses: 'typing.List[typing.Optional[bytes]]' = field(default_factory=lambda: [])
+            iPV4Addresses: 'typing.List[typing.Optional[bytes]]' = field(default_factory=lambda: [])
+            iPV6Addresses: 'typing.List[typing.Optional[bytes]]' = field(default_factory=lambda: [])
             type: 'GeneralDiagnostics.Enums.InterfaceTypeEnum' = 0
 
     class Commands:
@@ -428,6 +430,22 @@ class GeneralDiagnostics(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x00000033
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:

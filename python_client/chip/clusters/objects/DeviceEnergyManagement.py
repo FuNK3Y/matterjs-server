@@ -22,9 +22,9 @@ class DeviceEnergyManagement(Cluster):
     def descriptor(cls) -> ClusterObjectDescriptor:
         return ClusterObjectDescriptor(
             Fields=[
-                ClusterObjectFieldDescriptor(Label="esaType", Tag=0x00000000, Type=DeviceEnergyManagement.Enums.ESATypeEnum),
-                ClusterObjectFieldDescriptor(Label="esaCanGenerate", Tag=0x00000001, Type=bool),
-                ClusterObjectFieldDescriptor(Label="esaState", Tag=0x00000002, Type=DeviceEnergyManagement.Enums.ESAStateEnum),
+                ClusterObjectFieldDescriptor(Label="eSAType", Tag=0x00000000, Type=DeviceEnergyManagement.Enums.ESATypeEnum),
+                ClusterObjectFieldDescriptor(Label="eSACanGenerate", Tag=0x00000001, Type=bool),
+                ClusterObjectFieldDescriptor(Label="eSAState", Tag=0x00000002, Type=DeviceEnergyManagement.Enums.ESAStateEnum),
                 ClusterObjectFieldDescriptor(Label="absMinPower", Tag=0x00000003, Type=uint),
                 ClusterObjectFieldDescriptor(Label="absMaxPower", Tag=0x00000004, Type=uint),
                 ClusterObjectFieldDescriptor(Label="powerAdjustmentCapability", Tag=0x00000005, Type=typing.Union[None, Nullable, DeviceEnergyManagement.Structs.PowerAdjustCapabilityStruct]),
@@ -32,14 +32,15 @@ class DeviceEnergyManagement(Cluster):
                 ClusterObjectFieldDescriptor(Label="optOutState", Tag=0x00000007, Type=typing.Optional[DeviceEnergyManagement.Enums.OptOutStateEnum]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    esaType: 'DeviceEnergyManagement.Enums.ESATypeEnum' = 0
-    esaCanGenerate: 'bool' = False
-    esaState: 'DeviceEnergyManagement.Enums.ESAStateEnum' = 0
+    eSAType: 'DeviceEnergyManagement.Enums.ESATypeEnum' = 0
+    eSACanGenerate: 'bool' = False
+    eSAState: 'DeviceEnergyManagement.Enums.ESAStateEnum' = 0
     absMinPower: 'uint' = 0
     absMaxPower: 'uint' = 0
     powerAdjustmentCapability: 'typing.Union[None, Nullable, DeviceEnergyManagement.Structs.PowerAdjustCapabilityStruct]' = None
@@ -47,6 +48,7 @@ class DeviceEnergyManagement(Cluster):
     optOutState: 'typing.Optional[DeviceEnergyManagement.Enums.OptOutStateEnum]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
@@ -54,7 +56,7 @@ class DeviceEnergyManagement(Cluster):
     class Enums:
         class CostTypeEnum(MatterIntEnum):
             kFinancial = 0x00
-            kGhgEmissions = 0x01
+            kGHGEmissions = 0x01
             kComfort = 0x02
             kTemperature = 0x03
             # All received enum values that are not listed above will be mapped
@@ -70,7 +72,7 @@ class DeviceEnergyManagement(Cluster):
             kSpaceCooling = 0x03
             kSpaceHeatingCooling = 0x04
             kBatteryStorage = 0x05
-            kSolarPv = 0x06
+            kSolarPV = 0x06
             kFridgeFreezer = 0x07
             kWashingMachine = 0x08
             kDishwasher = 0x09
@@ -248,7 +250,7 @@ class DeviceEnergyManagement(Cluster):
                         ClusterObjectFieldDescriptor(Label="slotIsPausable", Tag=5, Type=typing.Optional[bool]),
                         ClusterObjectFieldDescriptor(Label="minPauseDuration", Tag=6, Type=typing.Optional[uint]),
                         ClusterObjectFieldDescriptor(Label="maxPauseDuration", Tag=7, Type=typing.Optional[uint]),
-                        ClusterObjectFieldDescriptor(Label="manufacturerEsaState", Tag=8, Type=typing.Optional[uint]),
+                        ClusterObjectFieldDescriptor(Label="manufacturerESAState", Tag=8, Type=typing.Optional[uint]),
                         ClusterObjectFieldDescriptor(Label="nominalPower", Tag=9, Type=typing.Optional[uint]),
                         ClusterObjectFieldDescriptor(Label="minPower", Tag=10, Type=typing.Optional[uint]),
                         ClusterObjectFieldDescriptor(Label="maxPower", Tag=11, Type=typing.Optional[uint]),
@@ -268,7 +270,7 @@ class DeviceEnergyManagement(Cluster):
             slotIsPausable: 'typing.Optional[bool]' = None
             minPauseDuration: 'typing.Optional[uint]' = None
             maxPauseDuration: 'typing.Optional[uint]' = None
-            manufacturerEsaState: 'typing.Optional[uint]' = None
+            manufacturerESAState: 'typing.Optional[uint]' = None
             nominalPower: 'typing.Optional[uint]' = None
             minPower: 'typing.Optional[uint]' = None
             maxPower: 'typing.Optional[uint]' = None
@@ -452,7 +454,7 @@ class DeviceEnergyManagement(Cluster):
 
     class Attributes:
         @dataclass
-        class EsaType(ClusterAttributeDescriptor):
+        class ESAType(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000098
@@ -468,7 +470,7 @@ class DeviceEnergyManagement(Cluster):
             value: 'DeviceEnergyManagement.Enums.ESATypeEnum' = 0
 
         @dataclass
-        class EsaCanGenerate(ClusterAttributeDescriptor):
+        class ESACanGenerate(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000098
@@ -484,7 +486,7 @@ class DeviceEnergyManagement(Cluster):
             value: 'bool' = False
 
         @dataclass
-        class EsaState(ClusterAttributeDescriptor):
+        class ESAState(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000098
@@ -612,6 +614,22 @@ class DeviceEnergyManagement(Cluster):
             value: 'typing.List[uint]' = field(default_factory=lambda: [])
 
         @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x00000098
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
         class AttributeList(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
@@ -676,7 +694,6 @@ class DeviceEnergyManagement(Cluster):
                     Fields=[
                     ])
 
-            pass
 
         @dataclass
         class PowerAdjustEnd(ClusterEvent):
@@ -717,7 +734,6 @@ class DeviceEnergyManagement(Cluster):
                     Fields=[
                     ])
 
-            pass
 
         @dataclass
         class Resumed(ClusterEvent):

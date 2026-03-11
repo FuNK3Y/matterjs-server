@@ -89,6 +89,7 @@ class ThreadNetworkDiagnostics(Cluster):
                 ClusterObjectFieldDescriptor(Label="rloc16", Tag=0x00000040, Type=typing.Union[None, Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -161,6 +162,7 @@ class ThreadNetworkDiagnostics(Cluster):
     rloc16: 'typing.Union[None, Nullable, uint]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
@@ -204,8 +206,8 @@ class ThreadNetworkDiagnostics(Cluster):
         class Feature(IntFlag):
             kPacketCounts = 0x1
             kErrorCounts = 0x2
-            kMleCounts = 0x4
-            kMacCounts = 0x8
+            kMLECounts = 0x4
+            kMACCounts = 0x8
 
     class Structs:
         @dataclass
@@ -218,7 +220,7 @@ class ThreadNetworkDiagnostics(Cluster):
                         ClusterObjectFieldDescriptor(Label="age", Tag=1, Type=uint),
                         ClusterObjectFieldDescriptor(Label="rloc16", Tag=2, Type=uint),
                         ClusterObjectFieldDescriptor(Label="linkFrameCounter", Tag=3, Type=uint),
-                        ClusterObjectFieldDescriptor(Label="mleFrameCounter", Tag=4, Type=uint),
+                        ClusterObjectFieldDescriptor(Label="mLEFrameCounter", Tag=4, Type=uint),
                         ClusterObjectFieldDescriptor(Label="lqi", Tag=5, Type=uint),
                         ClusterObjectFieldDescriptor(Label="averageRssi", Tag=6, Type=typing.Union[Nullable, int]),
                         ClusterObjectFieldDescriptor(Label="lastRssi", Tag=7, Type=typing.Union[Nullable, int]),
@@ -234,7 +236,7 @@ class ThreadNetworkDiagnostics(Cluster):
             age: 'uint' = 0
             rloc16: 'uint' = 0
             linkFrameCounter: 'uint' = 0
-            mleFrameCounter: 'uint' = 0
+            mLEFrameCounter: 'uint' = 0
             lqi: 'uint' = 0
             averageRssi: 'typing.Union[Nullable, int]' = NullValue
             lastRssi: 'typing.Union[Nullable, int]' = NullValue
@@ -1401,6 +1403,22 @@ class ThreadNetworkDiagnostics(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x00000035
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:

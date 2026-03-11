@@ -35,6 +35,7 @@ class ContentControl(Cluster):
                 ClusterObjectFieldDescriptor(Label="blockContentTimeWindow", Tag=0x0000000A, Type=typing.Optional[typing.List[typing.Optional[ContentControl.Structs.TimeWindowStruct]]]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -53,13 +54,14 @@ class ContentControl(Cluster):
     blockContentTimeWindow: 'typing.Optional[typing.List[typing.Optional[ContentControl.Structs.TimeWindowStruct]]]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
 
     class Enums:
         class StatusCodeEnum(MatterIntEnum):
-            kInvalidPinCode = 0x02
+            kInvalidPINCode = 0x02
             kInvalidRating = 0x03
             kInvalidChannel = 0x04
             kChannelAlreadyExist = 0x05
@@ -78,7 +80,7 @@ class ContentControl(Cluster):
     class Bitmaps:
         class Feature(IntFlag):
             kScreenTime = 0x1
-            kPinManagement = 0x2
+            kPINManagement = 0x2
             kBlockUnrated = 0x4
             kOnDemandContentRating = 0x8
             kScheduledContentRating = 0x10
@@ -648,6 +650,22 @@ class ContentControl(Cluster):
             value: 'typing.List[uint]' = field(default_factory=lambda: [])
 
         @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x0000050F
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
         class AttributeList(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
@@ -712,7 +730,6 @@ class ContentControl(Cluster):
                     Fields=[
                     ])
 
-            pass
 
         @dataclass
         class EnteringBlockContentTimeWindow(ClusterEvent):
@@ -730,4 +747,3 @@ class ContentControl(Cluster):
                     Fields=[
                     ])
 
-            pass

@@ -43,8 +43,8 @@ class PowerSource(Cluster):
                 ClusterObjectFieldDescriptor(Label="activeBatFaults", Tag=0x00000012, Type=typing.Optional[typing.List[typing.Optional[PowerSource.Enums.BatFaultEnum]]]),
                 ClusterObjectFieldDescriptor(Label="batReplacementDescription", Tag=0x00000013, Type=typing.Optional[str]),
                 ClusterObjectFieldDescriptor(Label="batCommonDesignation", Tag=0x00000014, Type=typing.Optional[PowerSource.Enums.BatCommonDesignationEnum]),
-                ClusterObjectFieldDescriptor(Label="batAnsiDesignation", Tag=0x00000015, Type=typing.Optional[str]),
-                ClusterObjectFieldDescriptor(Label="batIecDesignation", Tag=0x00000016, Type=typing.Optional[str]),
+                ClusterObjectFieldDescriptor(Label="batANSIDesignation", Tag=0x00000015, Type=typing.Optional[str]),
+                ClusterObjectFieldDescriptor(Label="batIECDesignation", Tag=0x00000016, Type=typing.Optional[str]),
                 ClusterObjectFieldDescriptor(Label="batApprovedChemistry", Tag=0x00000017, Type=typing.Optional[PowerSource.Enums.BatApprovedChemistryEnum]),
                 ClusterObjectFieldDescriptor(Label="batCapacity", Tag=0x00000018, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="batQuantity", Tag=0x00000019, Type=typing.Optional[uint]),
@@ -56,6 +56,7 @@ class PowerSource(Cluster):
                 ClusterObjectFieldDescriptor(Label="endpointList", Tag=0x0000001F, Type=typing.List[typing.Optional[uint]]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -82,8 +83,8 @@ class PowerSource(Cluster):
     activeBatFaults: 'typing.Optional[typing.List[typing.Optional[PowerSource.Enums.BatFaultEnum]]]' = None
     batReplacementDescription: 'typing.Optional[str]' = None
     batCommonDesignation: 'typing.Optional[PowerSource.Enums.BatCommonDesignationEnum]' = None
-    batAnsiDesignation: 'typing.Optional[str]' = None
-    batIecDesignation: 'typing.Optional[str]' = None
+    batANSIDesignation: 'typing.Optional[str]' = None
+    batIECDesignation: 'typing.Optional[str]' = None
     batApprovedChemistry: 'typing.Optional[PowerSource.Enums.BatApprovedChemistryEnum]' = None
     batCapacity: 'typing.Optional[uint]' = None
     batQuantity: 'typing.Optional[uint]' = None
@@ -95,6 +96,7 @@ class PowerSource(Cluster):
     endpointList: 'typing.List[typing.Optional[uint]]' = field(default_factory=lambda: [])
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
@@ -185,10 +187,10 @@ class PowerSource(Cluster):
             kAa = 0x02
             kC = 0x03
             kD = 0x04
-            k4V5 = 0x05
-            k6V0 = 0x06
-            k9V0 = 0x07
-            k12Aa = 0x08
+            k4v5 = 0x05
+            k6v0 = 0x06
+            k9v0 = 0x07
+            k12aa = 0x08
             kAaaa = 0x09
             kA = 0x0A
             kB = 0x0B
@@ -200,18 +202,18 @@ class PowerSource(Cluster):
             kA27 = 0x11
             kBa5800 = 0x12
             kDuplex = 0x13
-            k4Sr44 = 0x14
+            k4sr44 = 0x14
             k523 = 0x15
             k531 = 0x16
-            k15V0 = 0x17
-            k22V5 = 0x18
-            k30V0 = 0x19
-            k45V0 = 0x1A
-            k67V5 = 0x1B
+            k15v0 = 0x17
+            k22v5 = 0x18
+            k30v0 = 0x19
+            k45v0 = 0x1A
+            k67v5 = 0x1B
             kJ = 0x1C
-            kCr123A = 0x1D
+            kCr123a = 0x1D
             kCr2 = 0x1E
-            k2Cr5 = 0x1F
+            k2cr5 = 0x1F
             kCrP2 = 0x20
             kCrV3 = 0x21
             kSr41 = 0x22
@@ -241,7 +243,7 @@ class PowerSource(Cluster):
             kA13 = 0x3A
             kA312 = 0x3B
             kA675 = 0x3C
-            kAc41E = 0x3D
+            kAc41e = 0x3D
             k10180 = 0x3E
             k10280 = 0x3F
             k10440 = 0x40
@@ -251,7 +253,7 @@ class PowerSource(Cluster):
             k14650 = 0x44
             k15270 = 0x45
             k16340 = 0x46
-            kRcr123A = 0x47
+            kRcr123a = 0x47
             k17500 = 0x48
             k17670 = 0x49
             k18350 = 0x4A
@@ -663,7 +665,7 @@ class PowerSource(Cluster):
             value: 'typing.Optional[PowerSource.Enums.BatCommonDesignationEnum]' = None
 
         @dataclass
-        class BatAnsiDesignation(ClusterAttributeDescriptor):
+        class BatANSIDesignation(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x0000002F
@@ -679,7 +681,7 @@ class PowerSource(Cluster):
             value: 'typing.Optional[str]' = None
 
         @dataclass
-        class BatIecDesignation(ClusterAttributeDescriptor):
+        class BatIECDesignation(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x0000002F
@@ -863,6 +865,22 @@ class PowerSource(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x0000002F
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:

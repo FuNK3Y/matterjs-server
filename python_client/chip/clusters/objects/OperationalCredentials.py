@@ -22,7 +22,7 @@ class OperationalCredentials(Cluster):
     def descriptor(cls) -> ClusterObjectDescriptor:
         return ClusterObjectDescriptor(
             Fields=[
-                ClusterObjectFieldDescriptor(Label="nocs", Tag=0x00000000, Type=typing.List[typing.Optional[OperationalCredentials.Structs.NOCStruct]]),
+                ClusterObjectFieldDescriptor(Label="nOCs", Tag=0x00000000, Type=typing.List[typing.Optional[OperationalCredentials.Structs.NOCStruct]]),
                 ClusterObjectFieldDescriptor(Label="fabrics", Tag=0x00000001, Type=typing.List[typing.Optional[OperationalCredentials.Structs.FabricDescriptorStruct]]),
                 ClusterObjectFieldDescriptor(Label="supportedFabrics", Tag=0x00000002, Type=uint),
                 ClusterObjectFieldDescriptor(Label="commissionedFabrics", Tag=0x00000003, Type=uint),
@@ -30,12 +30,13 @@ class OperationalCredentials(Cluster):
                 ClusterObjectFieldDescriptor(Label="currentFabricIndex", Tag=0x00000005, Type=uint),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
             ])
 
-    nocs: 'typing.List[typing.Optional[OperationalCredentials.Structs.NOCStruct]]' = field(default_factory=lambda: [])
+    nOCs: 'typing.List[typing.Optional[OperationalCredentials.Structs.NOCStruct]]' = field(default_factory=lambda: [])
     fabrics: 'typing.List[typing.Optional[OperationalCredentials.Structs.FabricDescriptorStruct]]' = field(default_factory=lambda: [])
     supportedFabrics: 'uint' = 0
     commissionedFabrics: 'uint' = 0
@@ -43,14 +44,15 @@ class OperationalCredentials(Cluster):
     currentFabricIndex: 'uint' = 0
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
 
     class Enums:
         class CertificateChainTypeEnum(MatterIntEnum):
-            kDacCertificate = 0x01
-            kPaiCertificate = 0x02
+            kDACCertificate = 0x01
+            kPAICertificate = 0x02
             # All received enum values that are not listed above will be mapped
             # to kUnknownEnumValue. This is a helper enum value that should only
             # be used by code to process how it handles receiving an unknown
@@ -61,7 +63,7 @@ class OperationalCredentials(Cluster):
             kOk = 0x00
             kInvalidPublicKey = 0x01
             kInvalidNodeOpId = 0x02
-            kInvalidNoc = 0x03
+            kInvalidNOC = 0x03
             kMissingCsr = 0x04
             kTableFull = 0x05
             kInvalidAdminSubject = 0x06
@@ -392,7 +394,7 @@ class OperationalCredentials(Cluster):
 
     class Attributes:
         @dataclass
-        class Nocs(ClusterAttributeDescriptor):
+        class NOCs(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x0000003E
@@ -512,6 +514,22 @@ class OperationalCredentials(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x0000003E
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:

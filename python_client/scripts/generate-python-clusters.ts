@@ -34,8 +34,139 @@ const objectsDir = join(pythonClientDir, "chip", "clusters", "objects");
 // Name conversion utilities
 // ============================================================================
 
-/** Well-known acronyms that chip-clusters preserves as uppercase in class names. */
-const ACRONYMS = ["OTA", "DST", "UTC", "NTP", "ICAC", "CSR", "NOC", "CEC", "URL", "PIN", "ACL", "VID", "LED", "RFID", "TC", "CO", "EV", "ID"];
+/** Well-known acronyms that chip-clusters preserves as uppercase in class names.
+ * Ordering is defensive — in practice, no title-case form of one acronym is a
+ * substring of another's title-case form, so ordering does not affect correctness.
+ * Compound/longer acronyms are listed first as a precaution.
+ */
+const ACRONYMS = [
+    // Compound acronyms first as a precaution
+    "SNTPNTS", // e.g. kNonMatterSNTPNTS — before SNTP and NTP
+    "NTPNTS",  // e.g. kNonMatterNTPNTS  — before NTP
+    "BLEUWB",  // e.g. kAliroBLEUWB      — before BLE and UWB
+    "HVAC",    // e.g. HVACSystemTypeConfiguration — before AC
+    "ICAC",    // e.g. IcacCertificate             — before AC
+    "DAC",     // e.g. kDACCertificate              — before AC
+    "MAC",     // e.g. MACAddress, kMACCounts       — before AC
+    "EVSE",    // e.g. kEVSEStopped                 — before EV
+    "RFID",    // e.g. RfidCredential               — before RF
+    "PIR",     // e.g. PIROccupiedToUnoccupiedDelay — before PI
+    "IPV",     // e.g. kIPV6Failed                  — before IP
+    // Standard acronyms (alphabetical within groups for readability)
+    "ANSI",    // e.g. BatANSIDesignation
+    // "ARL" intentionally omitted — old pkg has both CommissioningARL (needs ARL) and Arl attr (must stay Arl)
+    "BDX",     // e.g. kBDXAsynchronous, kBDXSynchronous
+    "BLE",     // e.g. kBLEFault
+    "CEC",     // e.g. CEC key codes
+    "CO",      // e.g. kCOAlarm
+    "CSR",     // e.g. CSR elements
+    "DNS",     // e.g. SupportsDNSResolve
+    "DST",     // e.g. DSTOffset
+    "ESA",     // e.g. ESAType, ESAState, ESACanGenerate
+    "EV",      // e.g. kEVConnected, kEVStopped
+    "GHG",     // e.g. kGHGEmissions
+    "ICD",     // e.g. ICDCounter
+    "IEC",     // e.g. BatIECDesignation
+    "IP",      // e.g. kIPBindFailed, kIPV6Failed
+    "LED",     // e.g. LED indicators
+    "MLE",     // e.g. kMLECounts
+    "NFC",     // e.g. kNFCFault
+    "NOC",     // e.g. NOCStruct, kInvalidNOC
+    "SNTP",    // e.g. kMatterSNTP — before NTP (NTP is a suffix of SNTP)
+    "NTP",     // e.g. NTPClient, NTPServer
+    "OTA",     // e.g. AnnounceOTAProvider
+    "PAI",     // e.g. kPAICertificate
+    // "PAN" intentionally omitted — causes regressions for PanId attrs in ThreadNetworkDiagnostics
+    "PHY",     // e.g. PHYRate
+    "PIN",     // e.g. kPINManagement
+    "PI",      // e.g. PICoolingDemand, PIHeatingDemand
+    "PV",      // e.g. kSolarPV
+    "RF",      // e.g. kRFSensing
+    "RMS",     // e.g. RMSCurrent, RMSVoltage, RMSPower
+    "UTC",     // e.g. UTCTime — before TC (TC is a suffix of UTC)
+    "TC",      // e.g. kRequiredTCNotAccepted
+    "URL",     // e.g. kURLPlayback
+    "UWB",     // e.g. AliroBLEUWB protocol versions
+    "VID",     // e.g. VendorID
+    "AC",      // e.g. ACCapacity, ACType — after HVAC, ICAC, DAC, MAC
+    "ID",      // e.g. VendorID, NetworkID
+];
+
+/**
+ * Overrides for specific k-values where toChipName() either over-expands or under-expands acronyms.
+ * Key: matter.js PascalCase member name (as passed to toKName).
+ * Value: expected PascalCase (without "k" prefix) that the chip SDK uses.
+ *
+ * Over-expansion cases: the chip SDK keeps TitleCase where toChipName() would uppercase.
+ * Under-expansion cases: the chip SDK uppercases where toChipName() would keep TitleCase.
+ */
+const K_VALUE_OVERRIDES: Record<string, string> = {
+    // --- Acronym over-expansion: chip SDK keeps TitleCase ---
+    // PIN → Pin (standalone enum member, not mid-word like "programmingPin" → kProgrammingPIN)
+    Pin: "Pin",
+    PinCredential: "PinCredential",
+    // RFID → Rfid (standalone)
+    Rfid: "Rfid",
+    RfidCredential: "RfidCredential",
+    // AC → Ac (standalone, e.g. WiredCurrentTypeEnum.Ac, PowerModeEnum.Ac, WiFiVersionEnum.Ac)
+    Ac: "Ac",
+    // AC → Ac41e (battery designation code — chip SDK lowercases the whole code)
+    Ac41E: "Ac41e",
+    // PIR → Pir (standalone, OccupancySensing enum/bitmap)
+    Pir: "Pir",
+    // BDX → Bdx (standalone, DiagnosticLogs.TransferProtocolEnum)
+    Bdx: "Bdx",
+    // EVSE → Evse (standalone, DeviceEnergyManagement.ESATypeEnum)
+    Evse: "Evse",
+    // V2X — chip SDK uses kV2x (lowercase x) not kV2X
+    V2X: "V2x",
+    // ID → Id (inside NodeOperationalCertStatusEnum.InvalidNodeOpId)
+    InvalidNodeOpId: "InvalidNodeOpId",
+    // CSR → Csr (inside NodeOperationalCertStatusEnum.MissingCsr)
+    MissingCsr: "MissingCsr",
+
+    // --- WiFiBandEnum: chip SDK uses all-lowercase for GHz-band names ---
+    "2G4": "2g4",
+    "3G65": "3g65",
+    "5G": "5g",
+    "6G": "6g",
+    "60G": "60g",
+    "1G": "1g",
+
+    // --- PHYRateEnum: chip SDK uses lowercase g for Rate25G ---
+    Rate25G: "Rate25g",
+
+    // --- HourFormatEnum: chip SDK uses all-lowercase hr suffix ---
+    "12Hr": "12hr",
+    "24Hr": "24hr",
+
+    // --- ACCapacityFormatEnum.BtUh: chip SDK expands BTU as uppercase ---
+    BtUh: "BTUh",
+
+    // --- ACRefrigerantTypeEnum: chip SDK lowercases the trailing letter of refrigerant codes ---
+    R410A: "R410a",
+    R407C: "R407c",
+
+    // --- BatCommonDesignationEnum: chip SDK uses all-lowercase alphanumeric battery codes ---
+    "4V5": "4v5",
+    "6V0": "6v0",
+    "9V0": "9v0",
+    "12Aa": "12aa",
+    "4Sr44": "4sr44",
+    "15V0": "15v0",
+    "22V5": "22v5",
+    "30V0": "30v0",
+    "45V0": "45v0",
+    "67V5": "67v5",
+    "2Cr5": "2cr5",
+    Cr123A: "Cr123a",
+    Rcr123A: "Rcr123a",
+
+    // --- Acronym under-expansion: chip SDK uppercases where toChipName() does not ---
+    // PAN intentionally omitted from ACRONYMS (would break PanId in ThreadNetworkDiagnostics)
+    // but FeatureMap title "PanChange" must produce kPANChange
+    PanChange: "PANChange",
+};
 
 /**
  * Convert a PascalCase name from Matter.js to chip-clusters-compatible PascalCase.
@@ -48,16 +179,31 @@ function toChipName(name: string): string {
         // Match the title-case version of the acronym at a PascalCase word boundary.
         // The acronym must be followed by an uppercase letter (next word), end-of-string,
         // or a non-alpha character — NOT a lowercase letter (which means it's mid-word).
+        // Also match when followed by a plural 's' that is itself at a word boundary
+        // (e.g., "Nocs" → "NOCs").
         const titleCase = acr.charAt(0) + acr.slice(1).toLowerCase();
-        const regex = new RegExp(`${titleCase}(?=[A-Z]|$|[^a-zA-Z])`, "g");
+        const regex = new RegExp(`${titleCase}(?=[A-Z]|$|[^a-zA-Z]|s(?=[A-Z]|$|[^a-zA-Z]))`, "g");
         result = result.replace(regex, acr);
     }
     return result;
 }
 
-/** Convert camelCase name to kPascalCase (chip SDK enum/bitmap naming). */
+/**
+ * Strip a trailing "Enum" suffix from an enum type name.
+ * Matter.js appends "Enum" to some enum names; chip-clusters omits it.
+ * e.g. "LockStateEnum" → "LockState", "TypeEnum" → "Type"
+ */
+function stripEnumSuffix(name: string): string {
+    return name.endsWith("Enum") ? name.slice(0, -4) : name;
+}
+
+/** Convert camelCase enum member name to kPascalCase with acronym preservation. */
 function toKName(name: string): string {
-    return "k" + name.charAt(0).toUpperCase() + name.slice(1);
+    const pascal = name.charAt(0).toUpperCase() + name.slice(1);
+    if (pascal in K_VALUE_OVERRIDES) {
+        return "k" + K_VALUE_OVERRIDES[pascal];
+    }
+    return "k" + toChipName(pascal);
 }
 
 /** Convert PascalCase name to camelCase (for attribute/field labels). */
@@ -354,6 +500,9 @@ function buildDatatypeRegistry(): Map<string, { metatype: string; clusterName: s
         const metatype = vm.effectiveMetatype;
         if (metatype === "enum" || metatype === "bitmap" || metatype === "object") {
             registry.set(`Globals.${dt.name}`, { metatype, clusterName: "Globals" });
+            if (dt.name.endsWith("Enum") && metatype === "enum") {
+                registry.set(`Globals.${stripEnumSuffix(dt.name)}`, { metatype, clusterName: "Globals" });
+            }
         }
     }
 
@@ -365,6 +514,9 @@ function buildDatatypeRegistry(): Map<string, { metatype: string; clusterName: s
             const metatype = dt.effectiveMetatype;
             if (metatype === "enum" || metatype === "bitmap" || metatype === "object") {
                 registry.set(`${cluster.name}.${dt.name}`, { metatype, clusterName: cluster.name });
+                if (dt.name.endsWith("Enum") && metatype === "enum") {
+                    registry.set(`${cluster.name}.${stripEnumSuffix(dt.name)}`, { metatype, clusterName: cluster.name });
+                }
             }
         }
     }
@@ -525,6 +677,7 @@ function generateClusterFile(
     // Global attributes (always present)
     w.line(`ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),`);
     w.line(`ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),`);
+    w.line(`ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),`);
     w.line(`ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),`);
     w.line(`ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),`);
     w.line(`ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),`);
@@ -548,6 +701,7 @@ function generateClusterFile(
     // Global attribute fields
     w.line(`generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])`);
     w.line(`acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])`);
+    w.line(`eventList: 'typing.List[uint]' = field(default_factory=lambda: [])`);
     w.line(`attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])`);
     w.line(`featureMap: 'uint' = 0`);
     w.line(`clusterRevision: 'uint' = 0`);
@@ -644,6 +798,8 @@ function generateClusterFile(
     generateGlobalAttribute(w, "GeneratedCommandList", 0xFFF8, "typing.List[uint]", clusterId);
     w.blankLine();
     generateGlobalAttribute(w, "AcceptedCommandList", 0xFFF9, "typing.List[uint]", clusterId);
+    w.blankLine();
+    generateGlobalAttribute(w, "EventList", 0xFFFA, "typing.List[uint]", clusterId);
     w.blankLine();
     generateGlobalAttribute(w, "AttributeList", 0xFFFB, "typing.List[uint]", clusterId);
     w.blankLine();
@@ -789,9 +945,7 @@ function generateStruct(
         w.line(`${label}: '${pyType.annotation}' = ${pyType.defaultValue}`);
     }
 
-    if (members.length === 0) {
-        w.line("pass");
-    }
+    // No need for pass - the descriptor classproperty is always present
 
     w.popIndent();
 }
@@ -1012,9 +1166,7 @@ function generateEvent(
         w.line(`${toCamelCase(f.name)}: '${pyType.annotation}' = ${pyType.defaultValue}`);
     }
 
-    if (fields.length === 0) {
-        w.line("pass");
-    }
+    // No need for pass - cluster_id, event_id, and descriptor classpropertys are always present
 
     w.popIndent();
 }
@@ -1119,6 +1271,10 @@ function generateObjectsReexport(_clusterNames: string[]): string {
     w.line("    ClusterObjectFieldDescriptor,");
     w.line(")");
     w.blankLine();
+    w.line("# Re-export primitive types that HA imports from this module");
+    w.line("from chip.clusters.Types import NullValue, Nullable  # noqa: F401");
+    w.line("from chip.tlv import float32, uint  # noqa: F401");
+    w.blankLine();
     w.line("# Export list for type checkers");
     w.line("__all__ = [");
     w.pushIndent();
@@ -1129,6 +1285,10 @@ function generateObjectsReexport(_clusterNames: string[]): string {
     w.line('"ClusterObject",');
     w.line('"ClusterObjectDescriptor",');
     w.line('"ClusterObjectFieldDescriptor",');
+    w.line('"NullValue",');
+    w.line('"Nullable",');
+    w.line('"float32",');
+    w.line('"uint",');
     w.line("# Clusters from objects module are exported via *");
     w.popIndent();
     w.line("]");

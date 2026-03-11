@@ -34,9 +34,9 @@ class ElectricalPowerMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="activePower", Tag=0x00000008, Type=typing.Union[Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="reactivePower", Tag=0x00000009, Type=typing.Union[None, Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="apparentPower", Tag=0x0000000A, Type=typing.Union[None, Nullable, uint]),
-                ClusterObjectFieldDescriptor(Label="rmsVoltage", Tag=0x0000000B, Type=typing.Union[None, Nullable, uint]),
-                ClusterObjectFieldDescriptor(Label="rmsCurrent", Tag=0x0000000C, Type=typing.Union[None, Nullable, uint]),
-                ClusterObjectFieldDescriptor(Label="rmsPower", Tag=0x0000000D, Type=typing.Union[None, Nullable, uint]),
+                ClusterObjectFieldDescriptor(Label="rMSVoltage", Tag=0x0000000B, Type=typing.Union[None, Nullable, uint]),
+                ClusterObjectFieldDescriptor(Label="rMSCurrent", Tag=0x0000000C, Type=typing.Union[None, Nullable, uint]),
+                ClusterObjectFieldDescriptor(Label="rMSPower", Tag=0x0000000D, Type=typing.Union[None, Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="frequency", Tag=0x0000000E, Type=typing.Union[None, Nullable, int]),
                 ClusterObjectFieldDescriptor(Label="harmonicCurrents", Tag=0x0000000F, Type=typing.Union[None, Nullable, typing.List[typing.Optional[ElectricalPowerMeasurement.Structs.HarmonicMeasurementStruct]]]),
                 ClusterObjectFieldDescriptor(Label="harmonicPhases", Tag=0x00000010, Type=typing.Union[None, Nullable, typing.List[typing.Optional[ElectricalPowerMeasurement.Structs.HarmonicMeasurementStruct]]]),
@@ -44,6 +44,7 @@ class ElectricalPowerMeasurement(Cluster):
                 ClusterObjectFieldDescriptor(Label="neutralCurrent", Tag=0x00000012, Type=typing.Union[None, Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -60,9 +61,9 @@ class ElectricalPowerMeasurement(Cluster):
     activePower: 'typing.Union[Nullable, uint]' = NullValue
     reactivePower: 'typing.Union[None, Nullable, uint]' = None
     apparentPower: 'typing.Union[None, Nullable, uint]' = None
-    rmsVoltage: 'typing.Union[None, Nullable, uint]' = None
-    rmsCurrent: 'typing.Union[None, Nullable, uint]' = None
-    rmsPower: 'typing.Union[None, Nullable, uint]' = None
+    rMSVoltage: 'typing.Union[None, Nullable, uint]' = None
+    rMSCurrent: 'typing.Union[None, Nullable, uint]' = None
+    rMSPower: 'typing.Union[None, Nullable, uint]' = None
     frequency: 'typing.Union[None, Nullable, int]' = None
     harmonicCurrents: 'typing.Union[None, Nullable, typing.List[typing.Optional[ElectricalPowerMeasurement.Structs.HarmonicMeasurementStruct]]]' = None
     harmonicPhases: 'typing.Union[None, Nullable, typing.List[typing.Optional[ElectricalPowerMeasurement.Structs.HarmonicMeasurementStruct]]]' = None
@@ -70,6 +71,7 @@ class ElectricalPowerMeasurement(Cluster):
     neutralCurrent: 'typing.Union[None, Nullable, uint]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
@@ -94,9 +96,9 @@ class ElectricalPowerMeasurement(Cluster):
             kActivePower = 0x05
             kReactivePower = 0x06
             kApparentPower = 0x07
-            kRmsVoltage = 0x08
-            kRmsCurrent = 0x09
-            kRmsPower = 0x0A
+            kRMSVoltage = 0x08
+            kRMSCurrent = 0x09
+            kRMSPower = 0x0A
             kFrequency = 0x0B
             kPowerFactor = 0x0C
             kNeutralCurrent = 0x0D
@@ -340,7 +342,7 @@ class ElectricalPowerMeasurement(Cluster):
             value: 'typing.Union[None, Nullable, uint]' = None
 
         @dataclass
-        class RmsVoltage(ClusterAttributeDescriptor):
+        class RMSVoltage(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000090
@@ -356,7 +358,7 @@ class ElectricalPowerMeasurement(Cluster):
             value: 'typing.Union[None, Nullable, uint]' = None
 
         @dataclass
-        class RmsCurrent(ClusterAttributeDescriptor):
+        class RMSCurrent(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000090
@@ -372,7 +374,7 @@ class ElectricalPowerMeasurement(Cluster):
             value: 'typing.Union[None, Nullable, uint]' = None
 
         @dataclass
-        class RmsPower(ClusterAttributeDescriptor):
+        class RMSPower(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
                 return 0x00000090
@@ -492,6 +494,22 @@ class ElectricalPowerMeasurement(Cluster):
             @ChipUtility.classproperty
             def attribute_id(cls) -> int:
                 return 0x0000FFF9
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x00000090
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
 
             @ChipUtility.classproperty
             def attribute_type(cls) -> ClusterObjectFieldDescriptor:

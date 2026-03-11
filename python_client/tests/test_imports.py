@@ -123,3 +123,14 @@ def test_polling_removed():
     assert not hasattr(cc, "should_poll_eve_energy")
     assert not hasattr(cc, "check_polled_attributes")
     assert not hasattr(cc, "VENDOR_ID_EVE")
+
+
+def test_chip_objects_type_exports() -> None:
+    """chip.clusters.Objects must export primitive types used by the HA integration."""
+    from chip.clusters.Objects import Nullable, NullValue, float32, uint
+
+    assert issubclass(uint, int), "uint must be a subclass of int"
+    assert issubclass(float32, float), "float32 must be a subclass of float"
+    assert issubclass(Nullable, object), "Nullable must be a class"
+    assert isinstance(NullValue, Nullable), "NullValue must be an instance of Nullable"
+    assert uint(42) == 42, "uint must be constructable from a positive int"

@@ -37,6 +37,7 @@ class SmokeCoAlarm(Cluster):
                 ClusterObjectFieldDescriptor(Label="expiryDate", Tag=0x0000000C, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="generatedCommandList", Tag=0x0000FFF8, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="acceptedCommandList", Tag=0x0000FFF9, Type=typing.List[uint]),
+                ClusterObjectFieldDescriptor(Label="eventList", Tag=0x0000FFFA, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="attributeList", Tag=0x0000FFFB, Type=typing.List[uint]),
                 ClusterObjectFieldDescriptor(Label="featureMap", Tag=0x0000FFFC, Type=uint),
                 ClusterObjectFieldDescriptor(Label="clusterRevision", Tag=0x0000FFFD, Type=uint),
@@ -57,6 +58,7 @@ class SmokeCoAlarm(Cluster):
     expiryDate: 'typing.Optional[uint]' = None
     generatedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
     acceptedCommandList: 'typing.List[uint]' = field(default_factory=lambda: [])
+    eventList: 'typing.List[uint]' = field(default_factory=lambda: [])
     attributeList: 'typing.List[uint]' = field(default_factory=lambda: [])
     featureMap: 'uint' = 0
     clusterRevision: 'uint' = 0
@@ -85,13 +87,13 @@ class SmokeCoAlarm(Cluster):
         class ExpressedStateEnum(MatterIntEnum):
             kNormal = 0x00
             kSmokeAlarm = 0x01
-            kCoAlarm = 0x02
+            kCOAlarm = 0x02
             kBatteryAlert = 0x03
             kTesting = 0x04
             kHardwareFault = 0x05
             kEndOfService = 0x06
             kInterconnectSmoke = 0x07
-            kInterconnectCo = 0x08
+            kInterconnectCO = 0x08
             # All received enum values that are not listed above will be mapped
             # to kUnknownEnumValue. This is a helper enum value that should only
             # be used by code to process how it handles receiving an unknown
@@ -130,7 +132,7 @@ class SmokeCoAlarm(Cluster):
     class Bitmaps:
         class Feature(IntFlag):
             kSmokeAlarm = 0x1
-            kCoAlarm = 0x2
+            kCOAlarm = 0x2
 
     class Commands:
         @dataclass
@@ -389,6 +391,22 @@ class SmokeCoAlarm(Cluster):
             value: 'typing.List[uint]' = field(default_factory=lambda: [])
 
         @dataclass
+        class EventList(ClusterAttributeDescriptor):
+            @ChipUtility.classproperty
+            def cluster_id(cls) -> int:
+                return 0x0000005C
+
+            @ChipUtility.classproperty
+            def attribute_id(cls) -> int:
+                return 0x0000FFFA
+
+            @ChipUtility.classproperty
+            def attribute_type(cls) -> ClusterObjectFieldDescriptor:
+                return ClusterObjectFieldDescriptor(Type=typing.List[uint])
+
+            value: 'typing.List[uint]' = field(default_factory=lambda: [])
+
+        @dataclass
         class AttributeList(ClusterAttributeDescriptor):
             @ChipUtility.classproperty
             def cluster_id(cls) -> int:
@@ -510,7 +528,6 @@ class SmokeCoAlarm(Cluster):
                     Fields=[
                     ])
 
-            pass
 
         @dataclass
         class EndOfService(ClusterEvent):
@@ -528,7 +545,6 @@ class SmokeCoAlarm(Cluster):
                     Fields=[
                     ])
 
-            pass
 
         @dataclass
         class SelfTestComplete(ClusterEvent):
@@ -546,7 +562,6 @@ class SmokeCoAlarm(Cluster):
                     Fields=[
                     ])
 
-            pass
 
         @dataclass
         class AlarmMuted(ClusterEvent):
@@ -564,7 +579,6 @@ class SmokeCoAlarm(Cluster):
                     Fields=[
                     ])
 
-            pass
 
         @dataclass
         class MuteEnded(ClusterEvent):
@@ -582,7 +596,6 @@ class SmokeCoAlarm(Cluster):
                     Fields=[
                     ])
 
-            pass
 
         @dataclass
         class InterconnectSmokeAlarm(ClusterEvent):
@@ -638,4 +651,3 @@ class SmokeCoAlarm(Cluster):
                     Fields=[
                     ])
 
-            pass
