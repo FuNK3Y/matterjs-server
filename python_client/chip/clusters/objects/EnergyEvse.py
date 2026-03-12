@@ -200,6 +200,10 @@ class EnergyEvse(Cluster):
             response_type: typing.ClassVar[typing.Optional[str]] = None
 
             @ChipUtility.classproperty
+            def must_use_timed_invoke(cls) -> bool:
+                return True
+
+            @ChipUtility.classproperty
             def descriptor(cls) -> ClusterObjectDescriptor:
                 return ClusterObjectDescriptor(
                     Fields=[
@@ -212,6 +216,10 @@ class EnergyEvse(Cluster):
             command_id: typing.ClassVar[int] = 0x00000002
             is_client: typing.ClassVar[bool] = True
             response_type: typing.ClassVar[typing.Optional[str]] = None
+
+            @ChipUtility.classproperty
+            def must_use_timed_invoke(cls) -> bool:
+                return True
 
             @ChipUtility.classproperty
             def descriptor(cls) -> ClusterObjectDescriptor:
@@ -234,6 +242,10 @@ class EnergyEvse(Cluster):
             response_type: typing.ClassVar[typing.Optional[str]] = None
 
             @ChipUtility.classproperty
+            def must_use_timed_invoke(cls) -> bool:
+                return True
+
+            @ChipUtility.classproperty
             def descriptor(cls) -> ClusterObjectDescriptor:
                 return ClusterObjectDescriptor(
                     Fields=[
@@ -252,6 +264,10 @@ class EnergyEvse(Cluster):
             response_type: typing.ClassVar[typing.Optional[str]] = None
 
             @ChipUtility.classproperty
+            def must_use_timed_invoke(cls) -> bool:
+                return True
+
+            @ChipUtility.classproperty
             def descriptor(cls) -> ClusterObjectDescriptor:
                 return ClusterObjectDescriptor(
                     Fields=[
@@ -264,6 +280,10 @@ class EnergyEvse(Cluster):
             command_id: typing.ClassVar[int] = 0x00000005
             is_client: typing.ClassVar[bool] = True
             response_type: typing.ClassVar[typing.Optional[str]] = None
+
+            @ChipUtility.classproperty
+            def must_use_timed_invoke(cls) -> bool:
+                return True
 
             @ChipUtility.classproperty
             def descriptor(cls) -> ClusterObjectDescriptor:
@@ -282,6 +302,10 @@ class EnergyEvse(Cluster):
             response_type: typing.ClassVar[typing.Optional[str]] = 'GetTargetsResponse'
 
             @ChipUtility.classproperty
+            def must_use_timed_invoke(cls) -> bool:
+                return True
+
+            @ChipUtility.classproperty
             def descriptor(cls) -> ClusterObjectDescriptor:
                 return ClusterObjectDescriptor(
                     Fields=[
@@ -294,6 +318,10 @@ class EnergyEvse(Cluster):
             command_id: typing.ClassVar[int] = 0x00000007
             is_client: typing.ClassVar[bool] = True
             response_type: typing.ClassVar[typing.Optional[str]] = None
+
+            @ChipUtility.classproperty
+            def must_use_timed_invoke(cls) -> bool:
+                return True
 
             @ChipUtility.classproperty
             def descriptor(cls) -> ClusterObjectDescriptor:

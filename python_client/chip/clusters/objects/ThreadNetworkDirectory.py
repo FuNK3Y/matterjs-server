@@ -70,6 +70,10 @@ class ThreadNetworkDirectory(Cluster):
             response_type: typing.ClassVar[typing.Optional[str]] = None
 
             @ChipUtility.classproperty
+            def must_use_timed_invoke(cls) -> bool:
+                return True
+
+            @ChipUtility.classproperty
             def descriptor(cls) -> ClusterObjectDescriptor:
                 return ClusterObjectDescriptor(
                     Fields=[
@@ -84,6 +88,10 @@ class ThreadNetworkDirectory(Cluster):
             command_id: typing.ClassVar[int] = 0x00000001
             is_client: typing.ClassVar[bool] = True
             response_type: typing.ClassVar[typing.Optional[str]] = None
+
+            @ChipUtility.classproperty
+            def must_use_timed_invoke(cls) -> bool:
+                return True
 
             @ChipUtility.classproperty
             def descriptor(cls) -> ClusterObjectDescriptor:

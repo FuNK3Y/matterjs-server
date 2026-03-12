@@ -1078,6 +1078,15 @@ function generateCommand(
     w.line(`response_type: typing.ClassVar[typing.Optional[str]] = ${responseType}`);
     w.blankLine();
 
+    if ((model.access as any)?.timed === true) {
+        w.line("@ChipUtility.classproperty");
+        w.line("def must_use_timed_invoke(cls) -> bool:");
+        w.pushIndent();
+        w.line("return True");
+        w.popIndent();
+        w.blankLine();
+    }
+
     // Descriptor
     const fields = model.children || [];
     w.line("@ChipUtility.classproperty");

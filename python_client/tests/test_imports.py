@@ -134,3 +134,12 @@ def test_chip_objects_type_exports() -> None:
     assert issubclass(Nullable, object), "Nullable must be a class"
     assert isinstance(NullValue, Nullable), "NullValue must be an instance of Nullable"
     assert uint(42) == 42, "uint must be constructable from a positive int"
+
+
+def test_administrator_commissioning_timed_invoke() -> None:
+    """OpenCommissioningWindow must require timed invoke (security requirement)."""
+    from chip.clusters.objects.AdministratorCommissioning import AdministratorCommissioning
+
+    cls = AdministratorCommissioning.Commands.OpenCommissioningWindow
+    assert hasattr(cls, "must_use_timed_invoke"), "OpenCommissioningWindow must have must_use_timed_invoke"
+    assert cls.must_use_timed_invoke is True, "OpenCommissioningWindow.must_use_timed_invoke must return True"
