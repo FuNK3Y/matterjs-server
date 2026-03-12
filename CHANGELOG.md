@@ -14,6 +14,7 @@ This page shows a detailed overview of the changes between versions without the 
 - Fix: Update matter.js to the latest 0.17.0-nightly
     - Enhances session and OTA management when devices reboot surprisingly and push new sessions
     - Optimized OTA process for Ikea "multiple reboots" OTA updates
+    - Ensures commands are never queued
 
 ## 0.5.5 (2026-03-11)
 - Enhancement: Adds log file rotation (seven daily backups, rotated on startup and every 24 hours) when --log-file is specified
