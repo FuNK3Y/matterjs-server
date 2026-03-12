@@ -54,14 +54,14 @@ class ColorControl(Cluster):
                 ClusterObjectFieldDescriptor(Label="primary6Intensity", Tag=0x0000002A, Type=typing.Union[None, Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="whitePointX", Tag=0x00000030, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="whitePointY", Tag=0x00000031, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="colorPointRx", Tag=0x00000032, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="colorPointRy", Tag=0x00000033, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="colorPointRX", Tag=0x00000032, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="colorPointRY", Tag=0x00000033, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="colorPointRIntensity", Tag=0x00000034, Type=typing.Union[None, Nullable, uint]),
-                ClusterObjectFieldDescriptor(Label="colorPointGx", Tag=0x00000036, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="colorPointGy", Tag=0x00000037, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="colorPointGX", Tag=0x00000036, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="colorPointGY", Tag=0x00000037, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="colorPointGIntensity", Tag=0x00000038, Type=typing.Union[None, Nullable, uint]),
-                ClusterObjectFieldDescriptor(Label="colorPointBx", Tag=0x0000003A, Type=typing.Optional[uint]),
-                ClusterObjectFieldDescriptor(Label="colorPointBy", Tag=0x0000003B, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="colorPointBX", Tag=0x0000003A, Type=typing.Optional[uint]),
+                ClusterObjectFieldDescriptor(Label="colorPointBY", Tag=0x0000003B, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="colorPointBIntensity", Tag=0x0000003C, Type=typing.Union[None, Nullable, uint]),
                 ClusterObjectFieldDescriptor(Label="enhancedCurrentHue", Tag=0x00004000, Type=typing.Optional[uint]),
                 ClusterObjectFieldDescriptor(Label="enhancedColorMode", Tag=0x00004001, Type=ColorControl.Enums.EnhancedColorModeEnum),
@@ -114,14 +114,14 @@ class ColorControl(Cluster):
     primary6Intensity: 'typing.Union[None, Nullable, uint]' = None
     whitePointX: 'typing.Optional[uint]' = None
     whitePointY: 'typing.Optional[uint]' = None
-    colorPointRx: 'typing.Optional[uint]' = None
-    colorPointRy: 'typing.Optional[uint]' = None
+    colorPointRX: 'typing.Optional[uint]' = None
+    colorPointRY: 'typing.Optional[uint]' = None
     colorPointRIntensity: 'typing.Union[None, Nullable, uint]' = None
-    colorPointGx: 'typing.Optional[uint]' = None
-    colorPointGy: 'typing.Optional[uint]' = None
+    colorPointGX: 'typing.Optional[uint]' = None
+    colorPointGY: 'typing.Optional[uint]' = None
     colorPointGIntensity: 'typing.Union[None, Nullable, uint]' = None
-    colorPointBx: 'typing.Optional[uint]' = None
-    colorPointBy: 'typing.Optional[uint]' = None
+    colorPointBX: 'typing.Optional[uint]' = None
+    colorPointBY: 'typing.Optional[uint]' = None
     colorPointBIntensity: 'typing.Union[None, Nullable, uint]' = None
     enhancedCurrentHue: 'typing.Optional[uint]' = None
     enhancedColorMode: 'ColorControl.Enums.EnhancedColorModeEnum' = 0

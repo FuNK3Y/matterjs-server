@@ -239,6 +239,14 @@ const FIELD_NAME_OVERRIDES: Record<string, string> = {
     Ipv6Addresses:               "IPv6Addresses",
     OffPremiseServicesReachableIPV4: "offPremiseServicesReachableIPv4",
     OffPremiseServicesReachableIPV6: "offPremiseServicesReachableIPv6",
+
+    // --- ColorControl chromaticity coordinates: old chip SDK kept uppercase XY suffix ---
+    ColorPointBx:                "colorPointBX",
+    ColorPointBy:                "colorPointBY",
+    ColorPointGx:                "colorPointGX",
+    ColorPointGy:                "colorPointGY",
+    ColorPointRx:                "colorPointRX",
+    ColorPointRy:                "colorPointRY",
 };
 
 /**
