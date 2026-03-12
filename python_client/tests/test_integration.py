@@ -51,6 +51,16 @@ _state: dict = {}
 
 
 # ---------------------------------------------------------------------------
+# Guard helper: skip a test if required state keys were not set by prior tests
+# ---------------------------------------------------------------------------
+def _require_state(env: dict, *keys: str) -> None:
+    """Skip this test if any required state key is None (not set by prior test)."""
+    for key in keys:
+        if env.get(key) is None:
+            pytest.skip(f"Required state '{key}' not set — a prior test likely failed or was skipped")
+
+
+# ---------------------------------------------------------------------------
 # Helper: wait for OnOff attribute_updated event
 # ---------------------------------------------------------------------------
 async def wait_for_onoff_update(
@@ -372,6 +382,7 @@ class TestNodeQueries:
 
     async def test_21_health_shows_node_count_1(self, env):
         """Health endpoint shows node_count=1 after commissioning."""
+        _require_state(env, "node_id")
         async with aiohttp.ClientSession() as http:
             resp = await http.get(f"http://localhost:{SERVER_PORT}/health")
             assert resp.status == 200
@@ -380,6 +391,7 @@ class TestNodeQueries:
 
     async def test_22_get_nodes_returns_one(self, env):
         """get_nodes returns 1 node."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         # We need to fetch nodes from the server since local cache may not
         # have been populated by start_listening yet for the new node.
@@ -391,6 +403,7 @@ class TestNodeQueries:
 
     async def test_23_get_node_specific(self, env):
         """get_node returns the specific commissioned node."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         node = client.get_node(env["node_id"])
         assert node.node_id == env["node_id"]
@@ -398,6 +411,7 @@ class TestNodeQueries:
 
     async def test_24_get_node_ip_addresses(self, env):
         """Get node IP addresses."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         ips = await client.get_node_ip_addresses(
             env["node_id"], prefer_cache=False, scoped=False
@@ -408,6 +422,7 @@ class TestNodeQueries:
 
     async def test_25_ip_addresses_no_zone_id(self, env):
         """IP addresses without zone ID when scoped=False."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         ips = await client.get_node_ip_addresses(
             env["node_id"], prefer_cache=False, scoped=False
@@ -418,6 +433,7 @@ class TestNodeQueries:
 
     async def test_26_ping_node(self, env):
         """Ping node successfully."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         result = await client.ping_node(env["node_id"])
         assert isinstance(result, dict)
@@ -426,6 +442,7 @@ class TestNodeQueries:
 
     async def test_27_get_matter_fabrics(self, env):
         """Get matter fabrics from the node."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         fabrics = await client.get_matter_fabrics(env["node_id"])
         assert isinstance(fabrics, list)
@@ -443,6 +460,7 @@ class TestAttributeOperations:
 
     async def test_28_read_single_attribute(self, env):
         """Read VendorName (0/40/1)."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         attrs = await client.read_attribute(env["node_id"], "0/40/1")
         assert "0/40/1" in attrs
@@ -450,6 +468,7 @@ class TestAttributeOperations:
 
     async def test_29_read_multiple_attributes(self, env):
         """Read VendorName and ProductName."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         attrs = await client.read_attribute(
             env["node_id"], ["0/40/1", "0/40/3"]
@@ -459,6 +478,7 @@ class TestAttributeOperations:
 
     async def test_30_read_wildcard(self, env):
         """Read with wildcard (0/40/*)."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         attrs = await client.read_attribute(env["node_id"], "0/40/*")
         assert isinstance(attrs, dict)
@@ -466,6 +486,7 @@ class TestAttributeOperations:
 
     async def test_31_read_batched(self, env):
         """Read >9 attribute paths to test batching."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         paths = [
             "0/40/0",
@@ -489,6 +510,7 @@ class TestAttributeOperations:
 
     async def test_32_write_node_label(self, env):
         """Write NodeLabel and verify."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         result = await client.write_attribute(
             env["node_id"], "0/40/5", "Integration Test Node"
@@ -511,6 +533,7 @@ class TestDeviceCommands:
 
     async def test_33_toggle_on(self, env):
         """Toggle light ON and verify attribute_updated event."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         node_id = env["node_id"]
         client.clear_events()
@@ -524,6 +547,7 @@ class TestDeviceCommands:
 
     async def test_34_toggle_off(self, env):
         """Toggle light OFF and verify attribute_updated event."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         node_id = env["node_id"]
         client.clear_events()
@@ -537,6 +561,7 @@ class TestDeviceCommands:
 
     async def test_35_on_command(self, env):
         """Turn on light with On command."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         node_id = env["node_id"]
         client.clear_events()
@@ -550,6 +575,7 @@ class TestDeviceCommands:
 
     async def test_36_off_command(self, env):
         """Turn off light with Off command."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         node_id = env["node_id"]
         client.clear_events()
@@ -572,6 +598,7 @@ class TestNodeInterview:
 
     async def test_37_interview_node(self, env):
         """Interview node, verify node_updated event."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         node_id = env["node_id"]
         client.clear_events()
@@ -596,6 +623,7 @@ class TestCommissioningWindow:
 
     async def test_38_open_commissioning_window(self, env):
         """Open commissioning window, verify returned pairing codes."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         result = await client.open_commissioning_window(env["node_id"], timeout=180)
 
@@ -666,6 +694,7 @@ class TestTestNodeFunctionality:
 
     async def test_40_import_multiple_test_nodes(self, env):
         """Import multiple test nodes from HA server diagnostic dump format."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
 
         multi_node_dump = json.dumps(
@@ -728,6 +757,7 @@ class TestTestNodeFunctionality:
 
     async def test_41_get_nodes_includes_test_nodes(self, env):
         """get_nodes includes all test nodes."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         nodes = client.get_nodes()
         test_nodes = [n for n in nodes if n.node_id >= 0xFFFFFFFE00000000]
@@ -745,6 +775,7 @@ class TestTestNodeFunctionality:
 
     async def test_42_get_single_test_node(self, env):
         """get_node for a specific test node."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         node = client.get_node(env["test_node_id"])
         assert node.node_id == env["test_node_id"]
@@ -755,12 +786,14 @@ class TestTestNodeFunctionality:
 
     async def test_43_read_single_attr_test_node(self, env):
         """Read single attribute from test node."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         attrs = await client.read_attribute(env["test_node_id"], "0/40/1")
         assert attrs["0/40/1"] == "Test Vendor From Dump"
 
     async def test_44_read_multiple_attrs_test_node(self, env):
         """Read multiple attributes from test node."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         attrs = await client.read_attribute(
             env["test_node_id"], ["0/40/1", "0/40/3", "0/40/5"]
@@ -771,6 +804,7 @@ class TestTestNodeFunctionality:
 
     async def test_45_read_endpoint_wildcard_test_node(self, env):
         """Read with endpoint wildcard from test node."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         attrs = await client.read_attribute(env["test_node_id"], "*/40/1")
         assert "0/40/1" in attrs
@@ -778,6 +812,7 @@ class TestTestNodeFunctionality:
 
     async def test_46_read_cluster_wildcard_test_node(self, env):
         """Read with cluster wildcard from test node."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         attrs = await client.read_attribute(env["test_node_id"], "0/*/1")
         assert "0/40/1" in attrs  # VendorName
@@ -785,6 +820,7 @@ class TestTestNodeFunctionality:
 
     async def test_47_read_attribute_wildcard_test_node(self, env):
         """Read all attributes from cluster wildcard on test node."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         attrs = await client.read_attribute(env["test_node_id"], "0/40/*")
         assert "0/40/0" in attrs
@@ -796,12 +832,14 @@ class TestTestNodeFunctionality:
 
     async def test_48_read_nonexistent_attr_test_node(self, env):
         """Non-existent attribute returns None/undefined."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         attrs = await client.read_attribute(env["test_node_id"], "99/99/99")
         assert attrs.get("99/99/99") is None
 
     async def test_49_read_batched_test_node(self, env):
         """Read >9 paths on test node (batching)."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         paths = [
             "0/40/0",
@@ -826,6 +864,7 @@ class TestTestNodeFunctionality:
 
     async def test_50_write_attr_test_node(self, env):
         """Write attribute to test node (mock)."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         result = await client.write_attribute(
             env["test_node_id"], "0/40/5", "New Test Label"
@@ -835,6 +874,7 @@ class TestTestNodeFunctionality:
 
     async def test_51_device_command_toggle_test_node(self, env):
         """Device command toggle on test node (mock)."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         result = await client.send_command(
             APICommand.DEVICE_COMMAND,
@@ -848,6 +888,7 @@ class TestTestNodeFunctionality:
 
     async def test_52_device_command_on_test_node(self, env):
         """On command on test node (mock)."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         result = await client.send_command(
             APICommand.DEVICE_COMMAND,
@@ -861,6 +902,7 @@ class TestTestNodeFunctionality:
 
     async def test_53_device_command_with_payload_test_node(self, env):
         """Command with payload on test node (identify)."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         result = await client.send_command(
             APICommand.DEVICE_COMMAND,
@@ -874,6 +916,7 @@ class TestTestNodeFunctionality:
 
     async def test_54_mock_ip_addresses_test_node(self, env):
         """Test node returns mock IP addresses."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         ips = await client.send_command(
             APICommand.GET_NODE_IP_ADDRESSES,
@@ -887,6 +930,7 @@ class TestTestNodeFunctionality:
 
     async def test_55_mock_scoped_ip_addresses_test_node(self, env):
         """Test node returns mock scoped IP addresses."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         ips = await client.send_command(
             APICommand.GET_NODE_IP_ADDRESSES,
@@ -899,6 +943,7 @@ class TestTestNodeFunctionality:
 
     async def test_56_mock_ping_test_node(self, env):
         """Test node returns mock ping results."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         result = await client.ping_node(env["test_node_id"])
         assert isinstance(result, dict)
@@ -907,6 +952,7 @@ class TestTestNodeFunctionality:
 
     async def test_57_interview_test_node(self, env):
         """Interview test node triggers node_updated event."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         test_node_id = env["test_node_id"]
         client.clear_events()
@@ -922,6 +968,7 @@ class TestTestNodeFunctionality:
 
     async def test_58_remove_test_node(self, env):
         """Remove a test node and verify node_removed event."""
+        _require_state(env, "test_node_id", "test_node2_id")
         client: MatterTestClient = env["client"]
         test_node2_id = env["test_node2_id"]
         client.clear_events()
@@ -942,12 +989,14 @@ class TestTestNodeFunctionality:
 
     async def test_59_get_removed_test_node_raises(self, env):
         """Getting a removed test node raises."""
+        _require_state(env, "test_node2_id")
         client: MatterTestClient = env["client"]
         with pytest.raises(Exception, match="does not exist"):
             client.get_node(env["test_node2_id"])
 
     async def test_60_other_test_nodes_still_exist(self, env):
         """Other test nodes remain after removing one."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         nodes = client.get_nodes()
         test_nodes = [n for n in nodes if n.node_id >= 0xFFFFFFFE00000000]
@@ -956,6 +1005,7 @@ class TestTestNodeFunctionality:
 
     async def test_61_filter_unavailable_test_nodes(self, env):
         """Filtering with only_available=True excludes unavailable test nodes."""
+        _require_state(env, "test_node_id")
         client: MatterTestClient = env["client"]
         # Use get_nodes from server (client-side filtering)
         all_nodes = client.get_nodes()
@@ -985,6 +1035,7 @@ class TestServerRestartPersistence:
 
     async def test_62_restart_server_and_verify(self, env):
         """Restart server with same storage, verify node persists."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         session: aiohttp.ClientSession = env["session"]
         node_id = env["node_id"]
@@ -1084,6 +1135,7 @@ class TestDecommissioning:
 
     async def test_63_decommission_node(self, env):
         """Decommission node, verify node_removed event."""
+        _require_state(env, "node_id")
         client: MatterTestClient = env["client"]
         node_id = env["node_id"]
 
