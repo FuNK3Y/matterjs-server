@@ -92,8 +92,14 @@ class RvcRunMode(Cluster):
             def descriptor(cls) -> ClusterObjectDescriptor:
                 return ClusterObjectDescriptor(
                     Fields=[
+                        ClusterObjectFieldDescriptor(Label="label", Tag=0, Type=str),
+                        ClusterObjectFieldDescriptor(Label="mode", Tag=1, Type=uint),
+                        ClusterObjectFieldDescriptor(Label="modeTags", Tag=2, Type=typing.List[typing.Optional[RvcRunMode.Structs.ModeTagStruct]]),
                     ])
 
+            label: 'str' = ""
+            mode: 'uint' = 0
+            modeTags: 'typing.List[typing.Optional[RvcRunMode.Structs.ModeTagStruct]]' = field(default_factory=lambda: [])
 
         @dataclass
         class ModeTagStruct(ClusterObject):

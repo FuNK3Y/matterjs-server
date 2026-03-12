@@ -1019,7 +1019,10 @@ function generateStruct(
     w.line("Fields=[");
     w.pushIndent();
 
-    const members = model.children || [];
+    // Use model.members (not model.children) so that structs that inherit their
+    // fields from a base type (e.g. ModeOptionStruct in Mode clusters) include
+    // the inherited fields. For structs with direct children, members == children.
+    const members = [...(model.members as Iterable<any>)];
     for (const m of members) {
         const vm = m as ValueModel;
         const pyType = resolveType(vm);

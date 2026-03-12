@@ -143,3 +143,18 @@ def test_administrator_commissioning_timed_invoke() -> None:
     cls = AdministratorCommissioning.Commands.OpenCommissioningWindow
     assert hasattr(cls, "must_use_timed_invoke"), "OpenCommissioningWindow must have must_use_timed_invoke"
     assert cls.must_use_timed_invoke is True, "OpenCommissioningWindow.must_use_timed_invoke must return True"
+
+
+def test_mode_option_struct_has_fields() -> None:
+    """ModeOptionStruct must have label, mode, modeTags fields in all mode clusters."""
+    from chip.clusters.objects.DishwasherMode import DishwasherMode
+    from chip.clusters.objects.OvenMode import OvenMode
+
+    for cls, cluster_name in [(DishwasherMode, "DishwasherMode"), (OvenMode, "OvenMode")]:
+        struct = cls.Structs.ModeOptionStruct
+        # Use __dataclass_fields__ because modeTags uses default_factory and
+        # therefore has no class-level attribute (hasattr returns False for it).
+        fields = set(struct.__dataclass_fields__.keys())
+        assert "label"    in fields, f"{cluster_name}.Structs.ModeOptionStruct missing 'label'"
+        assert "mode"     in fields, f"{cluster_name}.Structs.ModeOptionStruct missing 'mode'"
+        assert "modeTags" in fields, f"{cluster_name}.Structs.ModeOptionStruct missing 'modeTags'"
